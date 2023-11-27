@@ -27,6 +27,16 @@ defmodule AshMoney.Types.Money do
     Keyword.get(constraints, :storage_type, :money_with_currency) == :money_with_currency
   end
 
+  @impl true
+  def composite?(constraints) do
+    Keyword.get(constraints, :storage_type, :money_with_currency) == :money_with_currency
+  end
+
+  @impl true
+  def composite_types(_constraints) do
+    [{:currency, :string, []}, {:amount, :decimal, []}]
+  end
+
   @impl Ash.Type
   def storage_type(constraints) do
     if constraints[:items] do
