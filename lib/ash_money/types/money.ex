@@ -16,10 +16,10 @@ defmodule AshMoney.Types.Money do
     ]
   end
 
-  @composite_type if(Code.ensure_loaded?(Money.Ecto.Composite.Type)) do
-    Money.Ecto.Composite.Type
+  if Code.ensure_loaded?(Money.Ecto.Composite.Type) do
+    @composite_type Money.Ecto.Composite.Type
   else
-    Money.Ecto.Map.Type
+    @composite_type Money.Ecto.Map.Type
   end
 
   @impl true
