@@ -1,5 +1,18 @@
 # Getting Started With AshMoney
 
+## Bring in the ash_graphql dependency
+
+```elixir
+def deps()
+  [
+    ...
+    {:ash_money, "~> 0.1.0"}
+  ]
+end
+```
+
+## Setup
+
 The primary thing that AshMoney provides is `AshMoney.Types.Money`. This is backed by `ex_money`. You can use it out of the box like so:
 
 ```elixir
