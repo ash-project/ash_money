@@ -4,7 +4,7 @@ defmodule AshMoney.MixProject do
   @version "0.1.0"
 
   @description """
-  Money extension for Ash.
+  A money extension for Ash.
   """
 
   def project do
