@@ -10,9 +10,16 @@ defmodule AshMoney.Types.Money do
       storage_type: [
         type: :atom,
         default: :money_with_currency,
-        doc: "The storage type for the money value. Can be `:money_with_currency` or `:map`."
+        doc:
+          "The storage type for the money value. Can be `:money_with_currency` or `:map`. There is no difference between the two unless `ex_money_sql` is installed."
       ]
     ]
+  end
+
+  @composite_type if(Code.ensure_loaded?(Money.Ecto.Composite.Type)) do
+    Money.Ecto.Composite.Type
+  else
+    Money.Ecto.Map.Type
   end
 
   @impl true
@@ -43,7 +50,7 @@ defmodule AshMoney.Types.Money do
     if constraints[:storage_type] == :map do
       Money.Ecto.Map.Type.cast(value)
     else
-      Money.Ecto.Composite.Type.cast(value)
+      @composite_type.cast(value)
     end
   end
 
@@ -52,7 +59,7 @@ defmodule AshMoney.Types.Money do
   def cast_stored(%Money{} = value, _), do: {:ok, value}
 
   def cast_stored({_amount, _currency} = value, _constraints),
-    do: Money.Ecto.Composite.Type.load(value)
+    do: @composite_type.load(value)
 
   def cast_stored(value, _constraints) do
     Money.Ecto.Map.Type.load(value)
@@ -72,7 +79,7 @@ defmodule AshMoney.Types.Money do
     if constraints[:storage_type] == :map do
       Money.Ecto.Map.Type.dump(value)
     else
-      Money.Ecto.Composite.Type.dump(value)
+      @composite_type.dump(value)
     end
   end
 

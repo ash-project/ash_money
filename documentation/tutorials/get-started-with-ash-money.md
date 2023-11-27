@@ -33,6 +33,8 @@ attribute :balance, :money
 
 ## AshPostgres Support
 
+Add the `:ex_money_sql` dependency to your `mix.exs` file.
+
 Thanks to `ex_money_sql`, there are excellent tools for lowering support for money into your postgres database. This allows for things like aggregates that sum amounts, and referencing money in expressions:
 
 ```elixir
