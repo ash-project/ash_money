@@ -7,5 +7,7 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 ## [v0.1.0](https://github.com/ash-project/ash_money/compare/v0.1.0...v0.1.0) (2023-11-27)
 
+* Initial Release
+
 
 
