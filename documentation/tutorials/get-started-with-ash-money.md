@@ -65,3 +65,8 @@ Add the following to your schema file:
     field(:currency, non_null(:string))
   end
 ```
+
+## Limitations
+
+Support for using built in operators with data layers that don't support it. For example, `expr(money + money)` will work in `AshPostgres`, but not when using `Ash.DataLayer.Ets`. 
+We need to make built in functions extensible by type to make this work.
