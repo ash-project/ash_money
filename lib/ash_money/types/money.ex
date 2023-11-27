@@ -34,7 +34,7 @@ defmodule AshMoney.Types.Money do
 
   @impl true
   def composite_types(_constraints) do
-    [{:currency, :string, []}, {:amount, :decimal, []}]
+    [{:currency, :currency_code, :string, []}, {:amount, :decimal, []}]
   end
 
   @impl Ash.Type
