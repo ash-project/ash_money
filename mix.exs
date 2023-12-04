@@ -145,6 +145,7 @@ defmodule AshMoney.MixProject do
       {:ash, ash_version("~> 2.0 and >= 2.17.6")},
       {:ex_money, "~> 5.15"},
       {:ex_money_sql, "~> 1.0"},
+      {:ash_postgres, "~> 1.0", optional: true},
       {:ex_doc, github: "elixir-lang/ex_doc", only: [:dev, :test], runtime: false},
       {:ex_check, "~> 0.12", only: [:dev, :test]},
       {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},

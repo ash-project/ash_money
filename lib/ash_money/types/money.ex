@@ -1,6 +1,16 @@
 defmodule AshMoney.Types.Money do
   @moduledoc """
   A money type for Ash that uses the `ex_money` library.
+
+  When constructing a composite type, use a tuple in the following structure:
+
+  `composite_type({"USD", Decimal.new("0")}, AshMoney.Types.Money)`
+
+  If you've added a custom type, like `:money`:
+
+  ```elixir
+  composite_type({"USD", Decimal.new("0")}, :money)
+  ```
   """
   use Ash.Type
 
