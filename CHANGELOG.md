@@ -5,6 +5,23 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.2](https://github.com/ash-project/ash_money/compare/v0.1.1...v0.1.2) (2023-12-04)
+
+
+
+
+### Bug Fixes:
+
+* add composite type storage_alias
+
+### Improvements:
+
+* add more optional deps for proper compile order
+
+* docs & optional deps
+
+* support new `Ash.Type` composite type callbacks
+
 ## [v0.1.1](https://github.com/ash-project/ash_money/compare/v0.1.0...v0.1.1) (2023-11-27)
 
 
