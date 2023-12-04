@@ -32,17 +32,17 @@ defmodule AshMoney.Types.Money do
     @composite_type Money.Ecto.Map.Type
   end
 
-  @impl true
+  @impl Ash.Type
   def cast_in_query?(constraints) do
     Keyword.get(constraints, :storage_type, :money_with_currency) == :money_with_currency
   end
 
-  @impl true
+  @impl Ash.Type
   def composite?(constraints) do
     Keyword.get(constraints, :storage_type, :money_with_currency) == :money_with_currency
   end
 
-  @impl true
+  @impl Ash.Type
   def composite_types(_constraints) do
     [{:currency, :currency_code, :string, []}, {:amount, :decimal, []}]
   end
@@ -105,10 +105,13 @@ defmodule AshMoney.Types.Money do
 
   if Code.ensure_loaded?(AshGraphql.Type) do
     @behaviour AshGraphql.Type
+
     @spec graphql_type(term()) :: atom()
+    @impl AshGraphql.Type
     def graphql_type(_), do: :money
 
     @spec graphql_input_type(term()) :: atom()
+    @impl AshGraphql.Type
     def graphql_input_type(_), do: :money_input
   end
 
