@@ -4,12 +4,12 @@ defmodule AshMoney.Types.Money do
 
   When constructing a composite type, use a tuple in the following structure:
 
-  `composite_type({"USD", Decimal.new("0")}, AshMoney.Types.Money)`
+  `composite_type(%{currency: "USD", amount: Decimal.new("0")}}, AshMoney.Types.Money)`
 
   If you've added a custom type, like `:money`:
 
   ```elixir
-  composite_type({"USD", Decimal.new("0")}, :money)
+  composite_type(%{currency: "USD", amount: Decimal.new("0")}}, :money)
   ```
   """
   use Ash.Type
