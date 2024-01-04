@@ -16,3 +16,5 @@ if Mix.env() == :dev do
     ],
     version_tag_prefix: "v"
 end
+
+config :ash, :known_types, [AshMoney.Types.Money]

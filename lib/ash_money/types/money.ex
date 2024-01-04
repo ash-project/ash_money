@@ -32,6 +32,81 @@ defmodule AshMoney.Types.Money do
     @composite_type Money.Ecto.Map.Type
   end
 
+  @impl true
+  def operator_overloads do
+    %{
+      :+ => %{
+        [__MODULE__, __MODULE__] => __MODULE__
+      },
+      :- => %{
+        [__MODULE__, __MODULE__] => __MODULE__
+      },
+      :* => %{
+        [__MODULE__, :integer] => __MODULE__,
+        [:integer, __MODULE__] => __MODULE__
+      }
+    }
+  end
+
+  @impl true
+  def evaluate_operator(%Ash.Query.Operator.Basic.Plus{
+        left: %Money{} = left,
+        right: %Money{} = right
+      }) do
+    case Money.add(left, right) do
+      {:ok, value} ->
+        {:known, value}
+
+      _ ->
+        :unknown
+    end
+  end
+
+  def evaluate_operator(%Ash.Query.Operator.Basic.Minus{
+        left: %Money{} = left,
+        right: %Money{} = right
+      }) do
+    case Money.sub(left, right) do
+      {:ok, value} ->
+        {:known, value}
+
+      _ ->
+        :unknown
+    end
+  end
+
+  def evaluate_operator(%Ash.Query.Operator.Basic.Times{
+        left: %Money{} = left,
+        right: right
+      })
+      when is_integer(right) do
+    case Money.mult(left, right) do
+      {:ok, value} ->
+        {:known, value}
+
+      _ ->
+        :unknown
+    end
+  end
+
+  def evaluate_operator(%Ash.Query.Operator.Basic.Times{
+        left: left,
+        right: %Money{} = right
+      })
+      when is_integer(left) do
+    case Money.mult(right, left) do
+      {:ok, value} ->
+        {:known, value}
+
+      _ ->
+        :unknown
+    end
+  end
+
+  def evaluate_operator(_other) do
+    :unknown
+  end
+
   @impl Ash.Type
   def cast_in_query?(constraints) do
     Keyword.get(constraints, :storage_type, :money_with_currency) == :money_with_currency

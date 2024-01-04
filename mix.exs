@@ -142,10 +142,10 @@ defmodule AshMoney.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ash, ash_version("~> 2.0 and >= 2.17.6")},
+      {:ash, ash_version("~> 2.0 and >= 2.17.20")},
       {:ex_money, "~> 5.15"},
       {:ex_money_sql, "~> 1.0", optional: true},
-      {:ash_postgres, "~> 1.0", optional: true},
+      {:ash_postgres, "~> 1.0 and >= 1.3.67", optional: true},
       {:ash_graphql, "~> 0.26 and >= 0.26.8", optional: true},
       {:ex_doc, github: "elixir-lang/ex_doc", only: [:dev, :test], runtime: false},
       {:ex_check, "~> 0.12", only: [:dev, :test]},
@@ -172,7 +172,7 @@ defmodule AshMoney.MixProject do
   defp ash_version(default_version) do
     case System.get_env("ASH_VERSION") do
       nil -> default_version
-      "local" -> [path: "../ash"]
+      "local" -> [path: "../ash", override: true]
       "main" -> [git: "https://github.com/ash-project/ash.git"]
       version -> "~> #{version}"
     end
