@@ -24,7 +24,7 @@ attribute :balance, AshMoney.Types.Money
 To support money operations in runtime expressions, which use `Ash`'s operator overloading feature, we have to tell Ash about the `Ash.Type.Money` using the `known_type` configuration.
 
 ```
-config :ash, :known_types, [Ash.Type.Money]
+config :ash, :known_types, [AshMoney.Types.Money]
 ```
 
 ## Referencing with `:money`
