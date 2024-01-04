@@ -19,7 +19,17 @@ The primary thing that AshMoney provides is `AshMoney.Types.Money`. This is back
 attribute :balance, AshMoney.Types.Money
 ```
 
-Or you can add it to your compile time list of types for easier reference:
+## Add to known types
+
+To support money operations in runtime expressions, which use `Ash`'s operator overloading feature, we have to tell Ash about the `Ash.Type.Money` using the `known_type` configuration.
+
+```
+config :ash, :known_types, [Ash.Type.Money]
+```
+
+## Referencing with `:money`
+
+You can add it to your compile time list of types for easier reference:
 
 ```elixir
 config :ash, :custom_types, money: AshMoney.Types.Money
