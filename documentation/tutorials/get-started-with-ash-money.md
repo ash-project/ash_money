@@ -6,7 +6,7 @@
 def deps()
   [
     ...
-    {:ash_money, "~> 0.1.3"}
+    {:ash_money, "~> 0.1.4"}
   ]
 end
 ```

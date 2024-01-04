@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.4](https://github.com/ash-project/ash_money/compare/v0.1.3...v0.1.4) (2024-01-04)
+
+
+
+
+### Improvements:
+
+* support new operator overrides and multiplication
+
 ## [v0.1.3](https://github.com/ash-project/ash_money/compare/v0.1.2...v0.1.3) (2023-12-06)
 
 

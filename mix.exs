@@ -1,7 +1,7 @@
 defmodule AshMoney.MixProject do
   use Mix.Project
 
-  @version "0.1.3"
+  @version "0.1.4"
 
   @description """
   A money extension for Ash.
