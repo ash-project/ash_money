@@ -13,7 +13,6 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
 
     def install(1) do
       """
-      #{Money.DDL.execute_each(add_money_mult())}
       #{Money.DDL.execute_each(Money.DDL.create_money_with_currency())}
       #{Money.DDL.execute_each(Money.DDL.define_plus_operator())}
       #{Money.DDL.execute_each(Money.DDL.define_minmax_functions())}
