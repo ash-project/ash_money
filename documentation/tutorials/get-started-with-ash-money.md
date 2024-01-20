@@ -1,6 +1,6 @@
 # Getting Started With AshMoney
 
-## Bring in the ash_graphql dependency
+## Bring in the ash_money dependency
 
 ```elixir
 def deps()
