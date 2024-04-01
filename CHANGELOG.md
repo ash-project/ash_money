@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.5](https://github.com/ash-project/ash_money/compare/v0.1.4...v0.1.5) (2024-04-01)
+
+
+
+
+### Bug Fixes:
+
+* remove duplicate money mult postgres install (#3)
+
 ## [v0.1.4](https://github.com/ash-project/ash_money/compare/v0.1.3...v0.1.4) (2024-01-04)
 
 
