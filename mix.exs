@@ -103,11 +103,12 @@ defmodule AshMoney.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ash, ash_version("~> 2.0 and >= 2.17.20")},
+      {:ash, ash_version("~> 3.0.0-rc.0")},
       {:ex_money, "~> 5.15"},
       {:ex_money_sql, "~> 1.0", optional: true},
-      {:ash_postgres, "~> 1.0 and >= 1.3.67", optional: true},
-      {:ash_graphql, "~> 0.26 and >= 0.26.8", optional: true},
+      {:ash_postgres, "~> 2.0.0-rc.3", optional: true},
+      {:ash_graphql, "~> 1.0.0-rc.0", optional: true},
+      # dev/test dependencies
       {:ex_doc, github: "elixir-lang/ex_doc", only: [:dev, :test], runtime: false},
       {:ex_check, "~> 0.12", only: [:dev, :test]},
       {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},
