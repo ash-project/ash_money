@@ -5,6 +5,11 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.6-rc.0](https://github.com/ash-project/ash_money/compare/v0.1.5...v0.1.6-rc.0) (2024-04-01)
+
+
+
+
 ## [v0.1.5](https://github.com/ash-project/ash_money/compare/v0.1.4...v0.1.5) (2024-04-01)
 
 
