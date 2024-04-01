@@ -103,7 +103,7 @@ defmodule AshMoney.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ash, ash_version("~> 3.0.0-rc.0")},
+      {:ash, ash_version("~> 2.0 or ~> 3.0.0-rc.6")},
       {:ex_money, "~> 5.15"},
       {:ex_money_sql, "~> 1.0", optional: true},
       {:ash_postgres, "~> 2.0.0-rc.3", optional: true},
