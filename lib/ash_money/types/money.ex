@@ -132,6 +132,18 @@ defmodule AshMoney.Types.Money do
   end
 
   @impl Ash.Type
+  def cast_atomic(%Money{} = value, constraints) do
+    case cast_input(value, constraints) do
+      {:ok, value} -> {:atomic, value}
+      {:error, other} -> {:error, other}
+    end
+  end
+
+  def cast_atomic(expr, _constraints) do
+    {:atomic, expr}
+  end
+
+  @impl Ash.Type
   def cast_input(nil, _constraints), do: {:ok, nil}
 
   def cast_input({amount, currency}, constraints) do
