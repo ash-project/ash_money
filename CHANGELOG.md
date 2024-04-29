@@ -5,6 +5,17 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.6-rc.1](https://github.com/ash-project/ash_money/compare/v0.1.6-rc.0...v0.1.6-rc.1) (2024-04-29)
+
+
+
+
+### Improvements:
+
+* add `Comp` implementation for money
+
+* support casting atomic in money type
+
 ## [v0.1.6-rc.0](https://github.com/ash-project/ash_money/compare/v0.1.5...v0.1.6-rc.0) (2024-04-01)
 
 
