@@ -4,7 +4,7 @@ defmodule AshMoney.MixProject do
   @version "0.1.6-rc.1"
 
   @description """
-  A money extension for Ash.
+  The extension for working with money types in Ash.
   """
 
   def project do
@@ -18,10 +18,6 @@ defmodule AshMoney.MixProject do
       package: package(),
       elixirc_paths: elixirc_paths(Mix.env()),
       dialyzer: [plt_add_apps: [:ash]],
-      preferred_cli_env: [
-        coveralls: :test,
-        "coveralls.github": :test
-      ],
       docs: docs(),
       description: @description,
       source_url: "https://github.com/ash-project/ash_money",
@@ -58,7 +54,7 @@ defmodule AshMoney.MixProject do
 
   defp docs do
     [
-      main: "get-started-with-ash-money",
+      main: "readme",
       source_ref: "v#{@version}",
       logo: "logos/small-logo.png",
       extra_section: "GUIDES",
@@ -78,7 +74,8 @@ defmodule AshMoney.MixProject do
         end
       end,
       extras: [
-        "documentation/tutorials/get-started-with-ash-money.md"
+        {"README.md", title: "Home"},
+        "documentation/tutorials/getting-started-with-ash-money.md"
       ],
       groups_for_extras: [
         Tutorials: ~r'documentation/tutorials',
