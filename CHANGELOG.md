@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.6-rc.2](https://github.com/ash-project/ash_money/compare/v0.1.6-rc.1...v0.1.6-rc.2) (2024-05-05)
+
+
+
+
+### Bug Fixes:
+
+* update ash_postgres dependency and fix version numbers in extension
+
 ## [v0.1.6-rc.1](https://github.com/ash-project/ash_money/compare/v0.1.6-rc.0...v0.1.6-rc.1) (2024-04-29)
 
 

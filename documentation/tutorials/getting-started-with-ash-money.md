@@ -6,7 +6,7 @@
 def deps()
   [
     ...
-    {:ash_money, "~> 0.1.6-rc.1"}
+    {:ash_money, "~> 0.1.6-rc.2"}
   ]
 end
 ```
