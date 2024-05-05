@@ -5,13 +5,13 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
     """
     use AshPostgres.CustomExtension, name: :ash_money, latest_version: 2
 
-    def install(2) do
+    def install(1) do
       """
       #{Money.DDL.execute_each(add_money_mult())}
       """
     end
 
-    def install(1) do
+    def install(0) do
       """
       #{Money.DDL.execute_each(Money.DDL.create_money_with_currency())}
       #{Money.DDL.execute_each(Money.DDL.define_plus_operator())}
@@ -21,7 +21,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       """
     end
 
-    def uninstall(v) when v in [1, 2] do
+    def uninstall(v) when v in [0, 1, 2] do
       """
       #{Money.DDL.execute_each(remove_money_mult())}
       #{Money.DDL.execute_each(Money.DDL.drop_sum_function())}
