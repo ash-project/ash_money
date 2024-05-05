@@ -43,7 +43,33 @@ attribute :balance, :money
 
 ## AshPostgres Support
 
-Add the `:ex_money_sql` dependency to your `mix.exs` file.
+### Installation
+
+Add the `:ex_money_sql` by following the [installation](https://github.com/kipcole9/money_sql#installation) and [migration](https://github.com/kipcole9/money_sql?tab=readme-ov-file#serializing-to-a-postgres-database-with-ecto) steps to add the `money_with_currency` type.
+
+For AshMoney to handle the composite `money_with_currency` type correctly in Postgres, we also need [these Postgres database functions](https://github.com/kipcole9/money_sql?tab=readme-ov-file#postgres-database-functions).
+Please install all of them by using their respective migration generators.
+
+Currently we depend on the following:
+```bash
+mix money.gen.postgres.plus_operator
+mix money.gen.postgres.sum_function
+mix money.gen.postgres.min_max_functions
+```
+
+Add `AshMoney.AshPostgresExtension` to your list of `installed_extensions` in your repo, and generate migrations.
+
+```elixir
+defmodule YourRepo do
+  def installed_extensions do
+    [..., AshMoney.AshPostgresExtension]
+  end
+end
+```
+
+Run `mix ash.migrate` afterwards and you're good to go.
+
+### Usage
 
 Thanks to `ex_money_sql`, there are excellent tools for lowering support for money into your postgres database. This allows for things like aggregates that sum amounts, and referencing money in expressions:
 
@@ -55,15 +81,6 @@ sum :sum_of_usd_balances, :accounts, :balance do
 end
 ```
 
-To install it, add `AshMoney.AshPostgresExtension` to your list of `installed_extensions` in your repo, and generate migrations.
-
-```elixir
-defmodule YourRepo do
-  def installed_extensions do
-    [..., AshMoney.AshPostgresExtension]
-  end
-end
-```
 
 ## AshGraphql Support
 
