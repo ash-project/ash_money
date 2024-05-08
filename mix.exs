@@ -75,13 +75,17 @@ defmodule AshMoney.MixProject do
       end,
       extras: [
         {"README.md", title: "Home"},
-        "documentation/tutorials/getting-started-with-ash-money.md"
+        "documentation/tutorials/getting-started-with-ash-money.md",
+        "CHANGELOG.md"
       ],
       groups_for_extras: [
         Tutorials: ~r'documentation/tutorials',
         "How To": ~r'documentation/how_to',
         Topics: ~r'documentation/topics',
-        DSLs: ~r'documentation/dsls'
+        DSLs: ~r'documentation/dsls',
+        "About AshMoney": [
+          "CHANGELOG.md"
+        ]
       ],
       groups_for_modules: [
         AshMoney: [
