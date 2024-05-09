@@ -74,6 +74,11 @@ Add the following to your schema file:
     field(:amount, non_null(:decimal))
     field(:currency, non_null(:string))
   end
+
+  input_object :money do
+    field(:amount, non_null(:decimal))
+    field(:currency, non_null(:string))
+  end
 ```
 
 ## Limitations
