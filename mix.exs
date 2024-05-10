@@ -1,7 +1,7 @@
 defmodule AshMoney.MixProject do
   use Mix.Project
 
-  @version "0.1.6-rc.2"
+  @version "0.1.6"
 
   @description """
   The extension for working with money types in Ash.
@@ -103,11 +103,11 @@ defmodule AshMoney.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ash, ash_version("~> 2.0 or ~> 3.0.0-rc.6")},
+      {:ash, ash_version("~> 3.0")},
       {:ex_money, "~> 5.15"},
       {:ex_money_sql, "~> 1.0", optional: true},
-      {:ash_postgres, "~> 2.0.0-rc and >= 2.0.0-rc.15", optional: true},
-      {:ash_graphql, "~> 1.0.0-rc", optional: true},
+      {:ash_postgres, "~> 2.0", optional: true},
+      {:ash_graphql, "~> 1.0", optional: true},
       # dev/test dependencies
       {:ex_doc, github: "elixir-lang/ex_doc", only: [:dev, :test], runtime: false},
       {:ex_check, "~> 0.12", only: [:dev, :test]},
