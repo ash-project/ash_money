@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.7](https://github.com/ash-project/ash_money/compare/v0.1.6...v0.1.7) (2024-05-12)
+
+
+
+
+### Improvements:
+
+* add money sub & negation operators
+
 ## [v0.1.6](https://github.com/ash-project/ash_money/compare/v0.1.6-rc.2...v0.1.6) (2024-05-10)
 
 
