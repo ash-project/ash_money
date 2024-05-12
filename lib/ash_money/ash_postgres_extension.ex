@@ -22,9 +22,9 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
 
     def install(0) do
       """
+      #{Money.DDL.execute_each(Money.DDL.create_money_with_currency())}
       #{Money.DDL.execute_each(add_money_sub())}
       #{Money.DDL.execute_each(add_money_neg())}
-      #{Money.DDL.execute_each(Money.DDL.create_money_with_currency())}
       #{Money.DDL.execute_each(Money.DDL.define_plus_operator())}
       #{Money.DDL.execute_each(Money.DDL.define_minmax_functions())}
       #{Money.DDL.execute_each(Money.DDL.define_sum_function())}
@@ -68,6 +68,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
         END;
       $$;
 
+
       CREATE OPERATOR - (
           rightarg = money_with_currency,
           procedure = money_neg
@@ -78,6 +79,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
     defp remove_money_neg do
       """
       DROP OPERATOR -(none, money_with_currency);
+
 
       DROP FUNCTION IF EXISTS money_neg(money_1 money_with_currency);
       """
@@ -108,6 +110,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
         END;
       $$;
 
+
       CREATE OPERATOR - (
           leftarg = money_with_currency,
           rightarg = money_with_currency,
@@ -120,6 +123,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
     defp remove_money_sub do
       """
       DROP OPERATOR - (money_with_currency, money_with_currency);
+
 
       DROP FUNCTION IF EXISTS money_sub(money_1 money_with_currency, money_2 money_with_currency);
       """
