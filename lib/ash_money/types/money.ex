@@ -39,16 +39,101 @@ defmodule AshMoney.Types.Money do
         [__MODULE__, __MODULE__] => __MODULE__
       },
       :- => %{
-        [__MODULE__, __MODULE__] => __MODULE__
+        [__MODULE__] => __MODULE__
       },
       :* => %{
         [__MODULE__, :integer] => __MODULE__,
+        [__MODULE__, :decimal] => __MODULE__,
+        [:integer, __MODULE__] => __MODULE__,
+        [:decimal, __MODULE__] => __MODULE__
+      },
+      :< => %{
+        [__MODULE__, :integer] => __MODULE__,
+        [__MODULE__, :decimal] => __MODULE__,
+        [__MODULE__, __MODULE__] => __MODULE__,
+        [:decimal, __MODULE__] => __MODULE__,
+        [:integer, __MODULE__] => __MODULE__
+      },
+      :<= => %{
+        [__MODULE__, :integer] => __MODULE__,
+        [__MODULE__, :decimal] => __MODULE__,
+        [__MODULE__, __MODULE__] => __MODULE__,
+        [:decimal, __MODULE__] => __MODULE__,
+        [:integer, __MODULE__] => __MODULE__
+      },
+      :> => %{
+        [__MODULE__, :integer] => __MODULE__,
+        [__MODULE__, :decimal] => __MODULE__,
+        [__MODULE__, __MODULE__] => __MODULE__,
+        [:decimal, __MODULE__] => __MODULE__,
+        [:integer, __MODULE__] => __MODULE__
+      },
+      :>= => %{
+        [__MODULE__, :integer] => __MODULE__,
+        [__MODULE__, :decimal] => __MODULE__,
+        [__MODULE__, __MODULE__] => __MODULE__,
+        [:decimal, __MODULE__] => __MODULE__,
         [:integer, __MODULE__] => __MODULE__
       }
     }
   end
 
   @impl true
+  def matches_type?(%Money{}, _), do: true
+  def matches_type?(_, _), do: false
+
+  @impl true
+  def evaluate_operator(%op{
+        left: %Money{} = left,
+        right: %Money{} = right
+      })
+      when op in [
+             Ash.Query.Operator.LessThan,
+             Ash.Query.Operator.GreaterThan,
+             Ash.Query.Operator.LessThanOrEqual,
+             Ash.Query.Operator.GreaterThanOrEqual
+           ] do
+    requirement =
+      case op do
+        Ash.Query.Operator.LessThan -> [:lt]
+        Ash.Query.Operator.GreaterThan -> [:gt]
+        Ash.Query.Operator.LessThanOrEqual -> [:lt, :eq]
+        Ash.Query.Operator.GreaterThanOrEqual -> [:gt, :eq]
+      end
+
+    Money.compare!(left, right) in requirement
+  end
+
+  def evaluate_operator(
+        %op{
+          left: %Money{} = left,
+          right: right
+        } = operator
+      )
+      when op in [
+             Ash.Query.Operator.LessThan,
+             Ash.Query.Operator.GreaterThan,
+             Ash.Query.Operator.LessThanOrEqual,
+             Ash.Query.Operator.GreaterThanOrEqual
+           ] do
+    evaluate_operator(%{operator | left: left, right: Money.new(left.currency, right)})
+  end
+
+  def evaluate_operator(
+        %op{
+          left: left,
+          right: %Money{} = right
+        } = operator
+      )
+      when op in [
+             Ash.Query.Operator.LessThan,
+             Ash.Query.Operator.GreaterThan,
+             Ash.Query.Operator.LessThanOrEqual,
+             Ash.Query.Operator.GreaterThanOrEqual
+           ] do
+    evaluate_operator(%{operator | left: Money.new(right.currency, left), right: right})
+  end
+
   def evaluate_operator(%Ash.Query.Operator.Basic.Plus{
         left: %Money{} = left,
         right: %Money{} = right
