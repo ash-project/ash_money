@@ -5,6 +5,17 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.8](https://github.com/ash-project/ash_money/compare/v0.1.7...v0.1.8) (2024-06-18)
+
+
+
+
+### Improvements:
+
+* add comparison operators to the extension
+
+* add more operator overloads
+
 ## [v0.1.7](https://github.com/ash-project/ash_money/compare/v0.1.6...v0.1.7) (2024-05-12)
 
 
