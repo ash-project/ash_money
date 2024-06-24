@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.9](https://github.com/ash-project/ash_money/compare/v0.1.8...v0.1.9) (2024-06-24)
+
+
+
+
+### Bug Fixes:
+
+* move create_money_with_currency to first (#60)
+
 ## [v0.1.8](https://github.com/ash-project/ash_money/compare/v0.1.7...v0.1.8) (2024-06-18)
 
 
