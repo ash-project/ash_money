@@ -39,11 +39,11 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
 
     def install(0) do
       """
+      #{Money.DDL.execute_each(Money.DDL.create_money_with_currency())}
       #{Money.DDL.execute_each(add_money_greater_than())}
       #{Money.DDL.execute_each(add_money_greater_than_or_equal())}
       #{Money.DDL.execute_each(add_money_less_than())}
       #{Money.DDL.execute_each(add_money_less_than_or_equal())}
-      #{Money.DDL.execute_each(Money.DDL.create_money_with_currency())}
       #{Money.DDL.execute_each(add_money_sub())}
       #{Money.DDL.execute_each(add_money_neg())}
       #{Money.DDL.execute_each(Money.DDL.define_plus_operator())}
