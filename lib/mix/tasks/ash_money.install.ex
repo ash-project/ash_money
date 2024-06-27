@@ -53,7 +53,7 @@ defmodule Mix.Tasks.AshMoney.Install do
       [:known_types],
       [AshMoney.Types.Money],
       updater: fn zipper ->
-        Igniter.Code.List.append_new_to_list(zipper, quote(do: AshMoney.Types.Money))
+        Igniter.Code.List.prepend_new_to_list(zipper, AshMoney.Types.Money)
       end
     )
   end
