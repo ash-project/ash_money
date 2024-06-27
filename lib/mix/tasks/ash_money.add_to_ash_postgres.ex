@@ -13,9 +13,28 @@ defmodule Mix.Tasks.AshMoney.AddToAshPostgres do
     |> Igniter.Project.Deps.add_dependency(:ex_money_sql, "~> 1.0")
     |> Igniter.add_task("deps.get")
     |> Igniter.update_elixir_file(repo_path, fn zipper ->
-      with {:ok, zipper} <- Igniter.Code.Module.move_to_module_using(zipper, AshPostgres.Repo),
-           {:ok, zipper} <- Igniter.Code.Module.move_to_def(zipper, :installed_extensions, 0) do
-        Igniter.Code.List.append_new_to_list(zipper, quote(do: AshMoney.AshPostgresExtension))
+      with {:ok, zipper} <- Igniter.Code.Module.move_to_module_using(zipper, AshPostgres.Repo) do
+        case Igniter.Code.Module.move_to_def(zipper, :installed_extensions, 0) do
+          {:ok, zipper} ->
+            case Igniter.Code.Common.move_right(zipper, &Igniter.Code.List.list?/1) do
+              {:ok, zipper} ->
+                Igniter.Code.List.append_new_to_list(
+                  zipper,
+                  quote(do: AshMoney.AshPostgresExtension)
+                )
+
+              :error ->
+                {:error, "installed_extensions/0 doesn't return a list"}
+            end
+
+          _ ->
+            Igniter.Code.Common.add_code(zipper, """
+            def installed_extensions do
+              # Add extensions here, and the migration generator will install them.
+              [AshMoney.AshPostgresExtension]
+            end
+            """)
+        end
       else
         _ ->
           Igniter.add_issue(
