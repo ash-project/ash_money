@@ -40,7 +40,7 @@ defmodule Mix.Tasks.AshMoney.Install do
       igniter,
       "config.exs",
       :ex_cldr,
-      :default_backend,
+      [:default_backend],
       cldr
     )
   end
@@ -50,7 +50,7 @@ defmodule Mix.Tasks.AshMoney.Install do
       igniter,
       "config.exs",
       :ash,
-      :known_types,
+      [:known_types],
       [AshMoney.Types.Money],
       updater: fn zipper ->
         Igniter.Code.List.append_new_to_list(zipper, quote(do: AshMoney.Types.Money))
