@@ -4,6 +4,7 @@ defmodule Mix.Tasks.AshMoney.AddToAshPostgres do
   require Igniter.Code.Common
   use Igniter.Mix.Task
 
+  @impl Igniter.Mix.Task
   def igniter(igniter, _argv) do
     repo = Igniter.Code.Module.module_name("Repo")
 
@@ -11,7 +12,7 @@ defmodule Mix.Tasks.AshMoney.AddToAshPostgres do
 
     igniter
     |> Igniter.Project.Deps.add_dependency(:ex_money_sql, "~> 1.0")
-    |> Igniter.add_task("deps.get")
+    |> Igniter.apply_and_fetch_dependencies()
     |> Igniter.update_elixir_file(repo_path, fn zipper ->
       with {:ok, zipper} <- Igniter.Code.Module.move_to_module_using(zipper, AshPostgres.Repo) do
         case Igniter.Code.Module.move_to_def(zipper, :installed_extensions, 0) do
@@ -44,5 +45,12 @@ defmodule Mix.Tasks.AshMoney.AddToAshPostgres do
       end
     end)
     |> Igniter.add_task("ash.codegen", ["install_ash_money_extension"])
+  end
+
+  @impl Igniter.Mix.Task
+  def info(_argv, _source) do
+    %Igniter.Mix.Task.Info{
+      adds_deps: [:ex_money_sql, "~> 1.0"]
+    }
   end
 end

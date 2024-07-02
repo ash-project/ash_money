@@ -9,30 +9,21 @@ defmodule Mix.Tasks.AshMoney.Install do
       cldr = Igniter.Code.Module.module_name("Cldr")
 
       igniter
-      |> setup_cldr_module(cldr)
-      |> configure_cldr_config(cldr)
-    end)
-    |> configure_config()
-    |> maybe_add_to_ash_postgres()
-  end
-
-  defp setup_cldr_module(igniter, cldr) do
-    path = Igniter.Code.Module.proper_location(cldr)
-
-    if Igniter.exists?(igniter, path) do
-      igniter
-    else
-      default_cldr_contents =
+      |> Igniter.Code.Module.find_and_update_or_create_module(
+        cldr,
         """
         defmodule #{inspect(cldr)} do
           use Cldr,
             locales: ["en"],
             default_locale: "en"
         end
-        """
-
-      Igniter.create_new_elixir_file(igniter, path, default_cldr_contents)
-    end
+        """,
+        fn zipper -> {:ok, zipper} end
+      )
+      |> configure_cldr_config(cldr)
+    end)
+    |> configure_config()
+    |> maybe_add_to_ash_postgres()
   end
 
   defp configure_cldr_config(igniter, cldr) do
@@ -53,7 +44,7 @@ defmodule Mix.Tasks.AshMoney.Install do
       [:known_types],
       [AshMoney.Types.Money],
       updater: fn zipper ->
-        Igniter.Code.List.prepend_new_to_list(zipper, AshMoney.Types.Money)
+        Igniter.Code.List.append_new_to_list(zipper, AshMoney.Types.Money)
       end
     )
   end
