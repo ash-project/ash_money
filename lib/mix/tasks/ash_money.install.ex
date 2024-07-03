@@ -6,13 +6,13 @@ defmodule Mix.Tasks.AshMoney.Install do
 
   def igniter(igniter, _argv) do
     Igniter.compose_task(igniter, "ex_cldr.install", [], fn igniter, _argv ->
-      cldr = Igniter.Code.Module.module_name("Cldr")
+      cldr_module_name = Igniter.Code.Module.module_name("Cldr")
 
       igniter
       |> Igniter.Code.Module.find_and_update_or_create_module(
-        cldr,
+        cldr_module_name,
         """
-        defmodule #{inspect(cldr)} do
+        defmodule #{inspect(cldr_module_name)} do
           use Cldr,
             locales: ["en"],
             default_locale: "en"
@@ -20,19 +20,19 @@ defmodule Mix.Tasks.AshMoney.Install do
         """,
         fn zipper -> {:ok, zipper} end
       )
-      |> configure_cldr_config(cldr)
+      |> configure_cldr_config(cldr_module_name)
     end)
     |> configure_config()
     |> maybe_add_to_ash_postgres()
   end
 
-  defp configure_cldr_config(igniter, cldr) do
+  defp configure_cldr_config(igniter, cldr_module_name) do
     Igniter.Project.Config.configure_new(
       igniter,
       "config.exs",
       :ex_cldr,
       [:default_backend],
-      cldr
+      cldr_module_name
     )
   end
 
@@ -50,27 +50,15 @@ defmodule Mix.Tasks.AshMoney.Install do
   end
 
   defp maybe_add_to_ash_postgres(igniter) do
-    repo = Igniter.Code.Module.module_name("Repo")
-    repo_path = Igniter.Code.Module.proper_location(repo)
+    repo_module_name = Igniter.Code.Module.module_name("Repo")
 
-    if Igniter.exists?(igniter, repo_path) do
-      igniter = Igniter.include_existing_elixir_file(igniter, repo_path)
-
-      zipper =
-        igniter.rewrite
-        |> Rewrite.source!(repo_path)
-        |> Rewrite.Source.get(:quoted)
-        |> Sourceror.Zipper.zip()
-
-      case Igniter.Code.Module.move_to_module_using(zipper, AshPostgres.Repo) do
-        :error ->
-          igniter
-
-        _zipper ->
-          Igniter.compose_task(igniter, "ash_money.add_to_ash_postgres")
-      end
+    with {:ok, {igniter, source, zipper}} <-
+           Igniter.Code.Module.find_module(igniter, repo_module_name),
+         %Sourceror.Zipper{} <- Igniter.Code.Module.move_to_module_using(zipper, AshPostgres.Repo) do
+      Igniter.compose_task(igniter, "ash_money.add_to_ash_postgres")
     else
-      igniter
+      error ->
+        igniter
     end
   end
 end

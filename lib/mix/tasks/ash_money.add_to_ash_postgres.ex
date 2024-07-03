@@ -6,14 +6,12 @@ defmodule Mix.Tasks.AshMoney.AddToAshPostgres do
 
   @impl Igniter.Mix.Task
   def igniter(igniter, _argv) do
-    repo = Igniter.Code.Module.module_name("Repo")
-
-    repo_path = Igniter.Code.Module.proper_location(repo)
+    repo_module_name = Igniter.Code.Module.module_name("Repo")
 
     igniter
     |> Igniter.Project.Deps.add_dependency(:ex_money_sql, "~> 1.0")
     |> Igniter.apply_and_fetch_dependencies()
-    |> Igniter.update_elixir_file(repo_path, fn zipper ->
+    |> Igniter.Code.Module.find_and_update_module!(repo_module_name, fn zipper ->
       with {:ok, zipper} <- Igniter.Code.Module.move_to_module_using(zipper, AshPostgres.Repo) do
         case Igniter.Code.Module.move_to_def(zipper, :installed_extensions, 0) do
           {:ok, zipper} ->
@@ -21,7 +19,7 @@ defmodule Mix.Tasks.AshMoney.AddToAshPostgres do
               {:ok, zipper} ->
                 Igniter.Code.List.append_new_to_list(
                   zipper,
-                  quote(do: AshMoney.AshPostgresExtension)
+                  AshMoney.AshPostgresExtension
                 )
 
               :error ->
@@ -40,17 +38,10 @@ defmodule Mix.Tasks.AshMoney.AddToAshPostgres do
         _ ->
           Igniter.add_issue(
             igniter,
-            "Unable to add AshMoney.AshPostgresExtension to installed_extensions/0 in #{inspect(repo)}"
+            "Unable to add AshMoney.AshPostgresExtension to installed_extensions/0 in #{inspect(repo_module_name)}"
           )
       end
     end)
     |> Igniter.add_task("ash.codegen", ["install_ash_money_extension"])
-  end
-
-  @impl Igniter.Mix.Task
-  def info(_argv, _source) do
-    %Igniter.Mix.Task.Info{
-      adds_deps: [:ex_money_sql, "~> 1.0"]
-    }
   end
 end
