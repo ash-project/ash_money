@@ -12,11 +12,9 @@ defmodule Mix.Tasks.AshMoney.Install do
       |> Igniter.Code.Module.find_and_update_or_create_module(
         cldr_module_name,
         """
-        defmodule #{inspect(cldr_module_name)} do
-          use Cldr,
-            locales: ["en"],
-            default_locale: "en"
-        end
+        use Cldr,
+          locales: ["en"],
+          default_locale: "en"
         """,
         fn zipper -> {:ok, zipper} end
       )
@@ -54,10 +52,11 @@ defmodule Mix.Tasks.AshMoney.Install do
 
     with {:ok, {igniter, source, zipper}} <-
            Igniter.Code.Module.find_module(igniter, repo_module_name),
-         %Sourceror.Zipper{} <- Igniter.Code.Module.move_to_module_using(zipper, AshPostgres.Repo) do
+         {:ok, _zipper} <-
+           Igniter.Code.Module.move_to_module_using(zipper, AshPostgres.Repo) do
       Igniter.compose_task(igniter, "ash_money.add_to_ash_postgres")
     else
-      error ->
+      _ ->
         igniter
     end
   end
