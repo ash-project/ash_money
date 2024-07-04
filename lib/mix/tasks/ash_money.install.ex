@@ -50,7 +50,7 @@ defmodule Mix.Tasks.AshMoney.Install do
   defp maybe_add_to_ash_postgres(igniter) do
     repo_module_name = Igniter.Code.Module.module_name("Repo")
 
-    with {:ok, {igniter, source, zipper}} <-
+    with {:ok, {igniter, _source, zipper}} <-
            Igniter.Code.Module.find_module(igniter, repo_module_name),
          {:ok, _zipper} <-
            Igniter.Code.Module.move_to_module_using(zipper, AshPostgres.Repo) do
