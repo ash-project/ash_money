@@ -9,7 +9,7 @@ defmodule Mix.Tasks.AshMoney.AddToAshPostgres do
     repo_module_name = Igniter.Code.Module.module_name("Repo")
 
     igniter
-    |> Igniter.Project.Deps.add_dependency(:ex_money_sql, "~> 1.0")
+    |> Igniter.Project.Deps.add_dep({:ex_money_sql, "~> 1.0"})
     |> Igniter.apply_and_fetch_dependencies()
     |> Igniter.Code.Module.find_and_update_module!(repo_module_name, fn zipper ->
       case Igniter.Code.Module.move_to_use(zipper, AshPostgres.Repo) do
