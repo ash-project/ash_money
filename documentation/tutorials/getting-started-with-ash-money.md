@@ -59,9 +59,7 @@ Thanks to `ex_money_sql`, there are excellent tools for lowering support for mon
 
 ```elixir
 sum :sum_of_usd_balances, :accounts, :balance do
-  filter expr(
-    fragment("(?).currency_code", balance) == "USD"
-  )
+  filter expr(balance[:currency_code] == "USD")
 end
 ```
 
