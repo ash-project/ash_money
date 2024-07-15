@@ -117,7 +117,7 @@ defmodule AshMoney.MixProject do
       {:sobelow, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:git_ops, "~> 2.5", only: [:dev, :test]},
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
-      {:mix_audit, ">= 0.0.0", only: [:dev, :test], runtime: false},
+      {:mix_audit, ">= 0.0.0", only: [:dev, :test], runtime: false}
     ]
   end
 
