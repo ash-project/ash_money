@@ -5,6 +5,19 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.10](https://github.com/ash-project/ash_money/compare/v0.1.9...v0.1.10) (2024-07-15)
+
+
+
+
+### Improvements:
+
+* update igniter and document installers
+
+* add Igniter installer task (#61)
+
+* add Igniter installer task
+
 ## [v0.1.9](https://github.com/ash-project/ash_money/compare/v0.1.8...v0.1.9) (2024-06-24)
 
 
