@@ -15,7 +15,7 @@ defmodule Mix.Tasks.AshMoney.AddToAshPostgres do
       case Igniter.Code.Module.move_to_use(zipper, AshPostgres.Repo) do
         # discarding since we just needed to check that `use AshPostgres.Repo` exists
         {:ok, _zipper} ->
-          case Igniter.Code.Module.move_to_def(zipper, :installed_extensions, 0) do
+          case Igniter.Code.Function.move_to_def(zipper, :installed_extensions, 0) do
             {:ok, zipper} ->
               case Igniter.Code.Common.move_right(zipper, &Igniter.Code.List.list?/1) do
                 {:ok, zipper} ->
@@ -49,6 +49,6 @@ defmodule Mix.Tasks.AshMoney.AddToAshPostgres do
           {:error, "Couldn't find `use AshPostgres.Repo` in #{inspect(repo_module_name)}"}
       end
     end)
-    |> Igniter.add_task("ash.codegen", ["install_ash_money_extension"])
+    |> Ash.Igniter.codegen("install_ash_money")
   end
 end

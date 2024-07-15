@@ -13,6 +13,16 @@ end
 
 ## Setup
 
+<!-- tabs-open -->
+
+### Using Igniter (recommended)
+
+```bash
+mix igniter.install ash_money
+```
+
+### Manual
+
 The primary thing that AshMoney provides is `AshMoney.Types.Money`. This is backed by `ex_money`. You can use it out of the box like so:
 
 ```elixir
@@ -65,6 +75,8 @@ defmodule YourRepo do
 end
 ```
 
+<!-- tabs-close -->
+
 ## AshGraphql Support
 
 Add the following to your schema file:
@@ -80,8 +92,3 @@ Add the following to your schema file:
     field(:currency, non_null(:string))
   end
 ```
-
-## Limitations
-
-Support for using built in operators with data layers that don't support it. For example, `expr(money + money)` will work in `AshPostgres`, but not when using `Ash.DataLayer.Ets`. 
-We need to make built in functions extensible by type to make this work.
