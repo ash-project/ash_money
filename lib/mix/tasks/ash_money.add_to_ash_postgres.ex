@@ -1,6 +1,11 @@
 defmodule Mix.Tasks.AshMoney.AddToAshPostgres do
-  @moduledoc "Adds AshMoney.AshPostgresExtension to installed_extensions and installs :ex_money_sql."
-  @shortdoc @moduledoc
+  @shortdoc "Adds AshMoney.AshPostgresExtension to installed_extensions and installs :ex_money_sql."
+  @moduledoc """
+  #{@shortdoc}
+
+  This is called automatically by `mix igniter.install ash_money` if `AshPostgres` is installed at the time.
+  This task is useful if you install `ash_postgres` *after* installing `ash_money`.
+  """
   require Igniter.Code.Common
   use Igniter.Mix.Task
 
