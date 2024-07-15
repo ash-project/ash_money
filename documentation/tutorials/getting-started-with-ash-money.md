@@ -51,19 +51,11 @@ Then compile ash again, `mix deps.compile ash --force`, and refer to it like so:
 attribute :balance, :money
 ```
 
-## AshPostgres Support
+## Adding AshPostgres Support
 
-Add the `:ex_money_sql` dependency to your `mix.exs` file.
+First, add the `:ex_money_sql` dependency to your `mix.exs` file.
 
-Thanks to `ex_money_sql`, there are excellent tools for lowering support for money into your postgres database. This allows for things like aggregates that sum amounts, and referencing money in expressions:
-
-```elixir
-sum :sum_of_usd_balances, :accounts, :balance do
-  filter expr(balance[:currency_code] == "USD")
-end
-```
-
-To install it, add `AshMoney.AshPostgresExtension` to your list of `installed_extensions` in your repo, and generate migrations.
+Then add `AshMoney.AshPostgresExtension` to your list of `installed_extensions` in your repo, and generate migrations.
 
 ```elixir
 defmodule YourRepo do
@@ -74,6 +66,16 @@ end
 ```
 
 <!-- tabs-close -->
+
+## AshPostgres Support
+
+Thanks to `ex_money_sql`, there are excellent tools for lowering support for money into your postgres database. This allows for things like aggregates that sum amounts, and referencing money in expressions:
+
+```elixir
+sum :sum_of_usd_balances, :accounts, :balance do
+  filter expr(balance[:currency_code] == "USD")
+end
+```
 
 ## AshGraphql Support
 
