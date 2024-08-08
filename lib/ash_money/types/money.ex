@@ -240,7 +240,7 @@ defmodule AshMoney.Types.Money do
 
   def cast_input(value, constraints) do
     if constraints[:storage_type] == :map do
-      Money.Ecto.Map.Type.cast(value)
+      apply(Money.Ecto.Map.Type, :cast, [value])
     else
       @composite_type.cast(value)
     end
@@ -254,14 +254,14 @@ defmodule AshMoney.Types.Money do
     do: @composite_type.load(value)
 
   def cast_stored(value, _constraints) do
-    Money.Ecto.Map.Type.load(value)
+    apply(Money.Ecto.Map.Type, :load, [value])
   end
 
   @impl Ash.Type
   def dump_to_embedded(nil, _constraints), do: {:ok, nil}
 
   def dump_to_embedded(value, _constraints) do
-    Money.Ecto.Map.Type.dump(value)
+    apply(Money.Ecto.Map.Type, :dump, [value])
   end
 
   @impl Ash.Type
@@ -269,7 +269,7 @@ defmodule AshMoney.Types.Money do
 
   def dump_to_native(value, constraints) do
     if constraints[:storage_type] == :map do
-      Money.Ecto.Map.Type.dump(value)
+      apply(Money.Ecto.Map.Type, :dump, [value])
     else
       @composite_type.dump(value)
     end
