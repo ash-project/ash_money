@@ -284,8 +284,12 @@ defmodule AshMoney.Types.Money do
       %{
         type: "object",
         properties: %{
-          amount: %{type: "number"},
+          amount: %{type: "string", pattern: "^-?\\d+(\\.\\d+)?$"},
           currency: %{type: "string"}
+        },
+        example: %{
+          amount: "100.00",
+          currency: "USD"
         },
         required: ["amount", "currency"]
       }
