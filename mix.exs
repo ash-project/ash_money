@@ -109,6 +109,7 @@ defmodule AshMoney.MixProject do
       {:ex_money_sql, "~> 1.0", optional: true},
       {:ash_postgres, "~> 2.0", optional: true},
       {:ash_graphql, "~> 1.0", optional: true},
+      {:ash_json_api, "~> 1.4 and >= 1.4.3", optional: true},
       # dev/test dependencies
       {:ex_doc, github: "elixir-lang/ex_doc", only: [:dev, :test], runtime: false},
       {:ex_check, "~> 0.12", only: [:dev, :test]},

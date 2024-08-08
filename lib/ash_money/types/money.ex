@@ -275,6 +275,29 @@ defmodule AshMoney.Types.Money do
     end
   end
 
+  if Code.ensure_loaded?(AshJsonApi.Type) do
+    @behaviour AshJsonApi.Type
+
+    @spec json_schema(Keyword.t()) :: map()
+    @impl AshJsonApi.Type
+    def json_schema(_) do
+      %{
+        type: "object",
+        properties: %{
+          amount: %{type: "number"},
+          currency: %{type: "string"}
+        },
+        required: ["amount", "currency"]
+      }
+    end
+
+    @spec json_write_schema(Keyword.t()) :: map()
+    @impl AshJsonApi.Type
+    def json_write_schema(constraints) do
+      json_schema(constraints)
+    end
+  end
+
   if Code.ensure_loaded?(AshGraphql.Type) do
     @behaviour AshGraphql.Type
 
