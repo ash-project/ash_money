@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.11](https://github.com/ash-project/ash_money/compare/v0.1.10...v0.1.11) (2024-08-08)
+
+
+
+
+### Improvements:
+
+* set up AshJsonApi type automatically
+
 ## [v0.1.10](https://github.com/ash-project/ash_money/compare/v0.1.9...v0.1.10) (2024-07-15)
 
 ### Improvements:
