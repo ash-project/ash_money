@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.12](https://github.com/ash-project/ash_money/compare/v0.1.11...v0.1.12) (2024-08-08)
+
+
+
+
+### Improvements:
+
+* use `string` not `number` for amount type in json schema
+
 ## [v0.1.11](https://github.com/ash-project/ash_money/compare/v0.1.10...v0.1.11) (2024-08-08)
 
 
