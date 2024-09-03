@@ -35,8 +35,8 @@ defmodule Mix.Tasks.AshMoney.Install do
   end
 
   defp configure_config(igniter) do
-    Igniter.Project.Config.configure(
-      igniter,
+    igniter
+    |> Igniter.Project.Config.configure(
       "config.exs",
       :ash,
       [:known_types],
@@ -44,6 +44,12 @@ defmodule Mix.Tasks.AshMoney.Install do
       updater: fn zipper ->
         Igniter.Code.List.append_new_to_list(zipper, AshMoney.Types.Money)
       end
+    )
+    |> Igniter.Project.Config.configure(
+      "config.exs",
+      :ash,
+      [:custom_types, :money],
+      AshMoney.Types.Money
     )
   end
 
