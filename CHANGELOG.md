@@ -5,6 +5,17 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.13](https://github.com/ash-project/ash_money/compare/v0.1.12...v0.1.13) (2024-09-10)
+
+
+
+
+### Improvements:
+
+* use latest igniter functions & update dependency
+
+* add short code automatically
+
 ## [v0.1.12](https://github.com/ash-project/ash_money/compare/v0.1.11...v0.1.12) (2024-08-08)
 
 
