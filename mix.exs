@@ -105,7 +105,7 @@ defmodule AshMoney.MixProject do
     [
       {:ash, ash_version("~> 3.0 and >= 3.0.15")},
       {:ex_money, "~> 5.15"},
-      {:igniter, "~> 0.2 and >= 0.2.13"},
+      {:igniter, "~> 0.3 and >= 0.3.34"},
       {:ex_money_sql, "~> 1.0", optional: true},
       {:ash_postgres, "~> 2.0", optional: true},
       {:ash_graphql, "~> 1.0", optional: true},

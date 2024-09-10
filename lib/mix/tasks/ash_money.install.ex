@@ -6,7 +6,7 @@ defmodule Mix.Tasks.AshMoney.Install do
 
   def igniter(igniter, _argv) do
     Igniter.compose_task(igniter, "ex_cldr.install", [], fn igniter, _argv ->
-      cldr_module_name = Igniter.Code.Module.module_name("Cldr")
+      cldr_module_name = Igniter.Code.Module.module_name(igniter, "Cldr")
 
       igniter
       |> Igniter.Code.Module.find_and_update_or_create_module(
@@ -54,7 +54,7 @@ defmodule Mix.Tasks.AshMoney.Install do
   end
 
   defp maybe_add_to_ash_postgres(igniter) do
-    repo_module_name = Igniter.Code.Module.module_name("Repo")
+    repo_module_name = Igniter.Code.Module.module_name(igniter, "Repo")
 
     with {:ok, {igniter, _source, zipper}} <-
            Igniter.Code.Module.find_module(igniter, repo_module_name),

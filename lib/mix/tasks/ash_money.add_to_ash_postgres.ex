@@ -11,7 +11,7 @@ defmodule Mix.Tasks.AshMoney.AddToAshPostgres do
 
   @impl Igniter.Mix.Task
   def igniter(igniter, _argv) do
-    repo_module_name = Igniter.Code.Module.module_name("Repo")
+    repo_module_name = Igniter.Code.Module.module_name(igniter, "Repo")
 
     igniter
     |> Igniter.Project.Deps.add_dep({:ex_money_sql, "~> 1.0"})
