@@ -11,12 +11,12 @@ defmodule Mix.Tasks.AshMoney.AddToAshPostgres do
 
   @impl Igniter.Mix.Task
   def igniter(igniter, _argv) do
-    repo_module_name = Igniter.Code.Module.module_name(igniter, "Repo")
+    repo_module_name = Igniter.Project.Module.module_name(igniter, "Repo")
 
     igniter
     |> Igniter.Project.Deps.add_dep({:ex_money_sql, "~> 1.0"})
     |> Igniter.apply_and_fetch_dependencies()
-    |> Igniter.Code.Module.find_and_update_module!(repo_module_name, fn zipper ->
+    |> Igniter.Project.Module.find_and_update_module!(repo_module_name, fn zipper ->
       case Igniter.Code.Module.move_to_use(zipper, AshPostgres.Repo) do
         # discarding since we just needed to check that `use AshPostgres.Repo` exists
         {:ok, _zipper} ->
