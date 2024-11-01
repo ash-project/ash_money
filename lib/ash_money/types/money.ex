@@ -42,38 +42,38 @@ defmodule AshMoney.Types.Money do
         [__MODULE__] => __MODULE__
       },
       :* => %{
-        [__MODULE__, :integer] => __MODULE__,
-        [__MODULE__, :decimal] => __MODULE__,
-        [:integer, __MODULE__] => __MODULE__,
-        [:decimal, __MODULE__] => __MODULE__
+        [__MODULE__, :integer] => Ash.Type.Boolean,
+        [__MODULE__, :decimal] => Ash.Type.Boolean,
+        [:integer, __MODULE__] => Ash.Type.Boolean,
+        [:decimal, __MODULE__] => Ash.Type.Boolean
       },
       :< => %{
-        [__MODULE__, :integer] => __MODULE__,
-        [__MODULE__, :decimal] => __MODULE__,
-        [__MODULE__, __MODULE__] => __MODULE__,
-        [:decimal, __MODULE__] => __MODULE__,
-        [:integer, __MODULE__] => __MODULE__
+        [__MODULE__, :integer] => Ash.Type.Boolean,
+        [__MODULE__, :decimal] => Ash.Type.Boolean,
+        [__MODULE__, __MODULE__] => Ash.Type.Boolean,
+        [:decimal, __MODULE__] => Ash.Type.Boolean,
+        [:integer, __MODULE__] => Ash.Type.Boolean
       },
       :<= => %{
-        [__MODULE__, :integer] => __MODULE__,
-        [__MODULE__, :decimal] => __MODULE__,
-        [__MODULE__, __MODULE__] => __MODULE__,
-        [:decimal, __MODULE__] => __MODULE__,
-        [:integer, __MODULE__] => __MODULE__
+        [__MODULE__, :integer] => Ash.Type.Boolean,
+        [__MODULE__, :decimal] => Ash.Type.Boolean,
+        [__MODULE__, __MODULE__] => Ash.Type.Boolean,
+        [:decimal, __MODULE__] => Ash.Type.Boolean,
+        [:integer, __MODULE__] => Ash.Type.Boolean
       },
       :> => %{
-        [__MODULE__, :integer] => __MODULE__,
-        [__MODULE__, :decimal] => __MODULE__,
-        [__MODULE__, __MODULE__] => __MODULE__,
-        [:decimal, __MODULE__] => __MODULE__,
-        [:integer, __MODULE__] => __MODULE__
+        [__MODULE__, :integer] => Ash.Type.Boolean,
+        [__MODULE__, :decimal] => Ash.Type.Boolean,
+        [__MODULE__, __MODULE__] => Ash.Type.Boolean,
+        [:decimal, __MODULE__] => Ash.Type.Boolean,
+        [:integer, __MODULE__] => Ash.Type.Boolean
       },
       :>= => %{
-        [__MODULE__, :integer] => __MODULE__,
-        [__MODULE__, :decimal] => __MODULE__,
-        [__MODULE__, __MODULE__] => __MODULE__,
-        [:decimal, __MODULE__] => __MODULE__,
-        [:integer, __MODULE__] => __MODULE__
+        [__MODULE__, :integer] => Ash.Type.Boolean,
+        [__MODULE__, :decimal] => Ash.Type.Boolean,
+        [__MODULE__, __MODULE__] => Ash.Type.Boolean,
+        [:decimal, __MODULE__] => Ash.Type.Boolean,
+        [:integer, __MODULE__] => Ash.Type.Boolean
       }
     }
   end
