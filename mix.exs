@@ -20,6 +20,7 @@ defmodule AshMoney.MixProject do
       dialyzer: [plt_add_apps: [:ash]],
       docs: docs(),
       description: @description,
+      consolidate_protocols: Mix.env() == :prod,
       source_url: "https://github.com/ash-project/ash_money",
       homepage_url: "https://github.com/ash-project/ash_money"
     ]

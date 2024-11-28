@@ -2,6 +2,31 @@ defmodule AshMoneyTest do
   use ExUnit.Case
   doctest AshMoney
 
+  defmodule ExampleResource do
+    use Ash.Resource, domain: nil
+
+    attributes do
+      uuid_primary_key(:id)
+      attribute(:frozen_from, :date)
+      attribute(:frozen_until, :date)
+      attribute(:end_date, :date)
+
+      attribute :visit_status, :atom do
+        constraints(one_of: [:scheduled])
+      end
+
+      attribute(:scheduled_date, :date)
+
+      attribute :latest_report_state, :atom do
+        constraints(one_of: [:pending])
+      end
+
+      attribute(:amount, AshMoney.Types.Money)
+    end
+  end
+
+  import Ash.Expr
+
   test "type overrides correctly apply" do
     assert Ash.Expr.determine_types(
              Ash.Query.Operator.LessThan,
@@ -19,5 +44,14 @@ defmodule AshMoneyTest do
              ],
              :boolean
            ) == {[{AshMoney.Types.Money, []}, {:integer, []}], {Ash.Type.Boolean, []}}
+  end
+
+  test "type overrides detect mixed types" do
+    {:ok, %op{left: left, right: right}} =
+      expr(amount <= 10)
+      |> Ash.Filter.hydrate_refs(%{resource: ExampleResource})
+
+    assert determine_types(op, [left, right], :boolean) ==
+             {[{AshMoney.Types.Money, []}, {:integer, []}], {Ash.Type.Boolean, []}}
   end
 end
