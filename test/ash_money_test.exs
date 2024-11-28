@@ -43,7 +43,11 @@ defmodule AshMoneyTest do
                0
              ],
              :boolean
-           ) == {[{AshMoney.Types.Money, []}, {:integer, []}], {Ash.Type.Boolean, []}}
+           ) ==
+             {[
+                {AshMoney.Types.Money, [storage_type: :money_with_currency]},
+                {Ash.Type.Integer, []}
+              ], {Ash.Type.Boolean, []}}
   end
 
   test "type overrides detect mixed types" do
@@ -52,6 +56,9 @@ defmodule AshMoneyTest do
       |> Ash.Filter.hydrate_refs(%{resource: ExampleResource})
 
     assert determine_types(op, [left, right], :boolean) ==
-             {[{AshMoney.Types.Money, []}, {:integer, []}], {Ash.Type.Boolean, []}}
+             {[
+                {AshMoney.Types.Money, [storage_type: :money_with_currency]},
+                {Ash.Type.Integer, []}
+              ], {Ash.Type.Boolean, []}}
   end
 end
