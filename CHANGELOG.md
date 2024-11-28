@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.14](https://github.com/ash-project/ash_money/compare/v0.1.13...v0.1.14) (2024-11-28)
+
+
+
+
+### Bug Fixes:
+
+* properly spec extended operators
+
 ## [v0.1.13](https://github.com/ash-project/ash_money/compare/v0.1.12...v0.1.13) (2024-09-10)
 
 
