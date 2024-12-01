@@ -21,6 +21,8 @@ defmodule AshMoneyTest do
         constraints(one_of: [:pending])
       end
 
+      attribute(:duration, :decimal)
+
       attribute(:amount, AshMoney.Types.Money)
     end
   end
@@ -46,7 +48,7 @@ defmodule AshMoneyTest do
            ) ==
              {[
                 {AshMoney.Types.Money, [storage_type: :money_with_currency]},
-                {Ash.Type.Integer, []}
+                {Ash.Type.Decimal, []}
               ], {Ash.Type.Boolean, []}}
   end
 
@@ -58,7 +60,24 @@ defmodule AshMoneyTest do
     assert determine_types(op, [left, right], :boolean) ==
              {[
                 {AshMoney.Types.Money, [storage_type: :money_with_currency]},
-                {Ash.Type.Integer, []}
+                {Ash.Type.Decimal, []}
               ], {Ash.Type.Boolean, []}}
+  end
+
+  test "type overrides use decimals" do
+    {:ok, %op{left: left, right: right}} =
+      expr(
+        amount *
+          (duration / 10)
+      )
+      |> Ash.Filter.hydrate_refs(%{resource: ExampleResource})
+
+    determine_types(op, [left, right], AshMoney.Types.Money) |> IO.inspect()
+
+    # {:ok, %op{left: left, right: right}} =
+    #   expr(duration / 60 * 2)
+    #   |> Ash.Filter.hydrate_refs(%{resource: ExampleResource})
+
+    # determine_types(op, [left, right], :decimal) |> IO.inspect()
   end
 end
