@@ -63,21 +63,4 @@ defmodule AshMoneyTest do
                 {Ash.Type.Decimal, []}
               ], {Ash.Type.Boolean, []}}
   end
-
-  test "type overrides use decimals" do
-    {:ok, %op{left: left, right: right}} =
-      expr(
-        amount *
-          (duration / 10)
-      )
-      |> Ash.Filter.hydrate_refs(%{resource: ExampleResource})
-
-    determine_types(op, [left, right], AshMoney.Types.Money) |> IO.inspect()
-
-    # {:ok, %op{left: left, right: right}} =
-    #   expr(duration / 60 * 2)
-    #   |> Ash.Filter.hydrate_refs(%{resource: ExampleResource})
-
-    # determine_types(op, [left, right], :decimal) |> IO.inspect()
-  end
 end
