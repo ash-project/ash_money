@@ -63,4 +63,12 @@ defmodule AshMoneyTest do
                 {Ash.Type.Decimal, []}
               ], {Ash.Type.Boolean, []}}
   end
+
+  test "composite types can be accessed" do
+    assert {:ok, expr} =
+             expr(amount[:currency])
+             |> Ash.Filter.hydrate_refs(%{resource: ExampleResource})
+
+    assert {:ok, :USD} = eval(expr, record: %ExampleResource{amount: Money.new(0, :USD)})
+  end
 end
