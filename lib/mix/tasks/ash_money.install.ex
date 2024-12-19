@@ -73,7 +73,6 @@ else
     @moduledoc "Installs AshMoney. Should be run with `mix igniter.install ash_money`"
     @shortdoc @moduledoc
 
-    @example "mix igniter.install ash_money"
     @shortdoc "Installs AshMoney. Invoke with `mix igniter.install ash_money`"
 
     @moduledoc @shortdoc
