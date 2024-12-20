@@ -5,6 +5,21 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.15](https://github.com/ash-project/ash_money/compare/v0.1.14...v0.1.15) (2024-12-20)
+
+
+
+
+### Bug Fixes:
+
+* multiplication returns a money
+
+### Improvements:
+
+* make igniter optional
+
+* prefer decimals in type signatures
+
 ## [v0.1.14](https://github.com/ash-project/ash_money/compare/v0.1.13...v0.1.14) (2024-11-28)
 
 
