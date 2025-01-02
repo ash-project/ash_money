@@ -17,7 +17,7 @@ defmodule AshMoney.MixProject do
       aliases: aliases(),
       package: package(),
       elixirc_paths: elixirc_paths(Mix.env()),
-      dialyzer: [plt_add_apps: [:ash]],
+      dialyzer: [plt_add_apps: [:mix]],
       docs: docs(),
       description: @description,
       consolidate_protocols: Mix.env() == :prod,
