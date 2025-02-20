@@ -91,7 +91,7 @@ defmodule AshMoney.Types.Money do
         Ash.Query.Operator.GreaterThanOrEqual -> [:gt, :eq]
       end
 
-    Money.compare!(left, right) in requirement
+    {:known, Money.compare!(left, right) in requirement}
   end
 
   def evaluate_operator(
