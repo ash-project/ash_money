@@ -178,6 +178,32 @@ defmodule AshMoney.Types.Money do
     end
   end
 
+  def evaluate_operator(%Ash.Query.Operator.Basic.Times{
+        left: %Money{} = left,
+        right: %Decimal{} = right
+      }) do
+    case Money.mult(left, right) do
+      {:ok, value} ->
+        {:known, value}
+
+      _ ->
+        :unknown
+    end
+  end
+
+  def evaluate_operator(%Ash.Query.Operator.Basic.Times{
+        left: %Decimal{} = left,
+        right: %Money{} = right
+      }) do
+    case Money.mult(right, left) do
+      {:ok, value} ->
+        {:known, value}
+
+      _ ->
+        :unknown
+    end
+  end
+
   def evaluate_operator(_other) do
     :unknown
   end
