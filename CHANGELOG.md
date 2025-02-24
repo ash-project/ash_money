@@ -5,6 +5,17 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.16](https://github.com/ash-project/ash_money/compare/v0.1.15...v0.1.16) (2025-02-24)
+
+
+
+
+### Bug Fixes:
+
+* include decimal types in multiplication evaluator
+
+* case clause error in greater than or equal operator evaluator
+
 ## [v0.1.15](https://github.com/ash-project/ash_money/compare/v0.1.14...v0.1.15) (2024-12-20)
 
 
