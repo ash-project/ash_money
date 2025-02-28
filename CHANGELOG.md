@@ -5,6 +5,17 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.17](https://github.com/ash-project/ash_money/compare/v0.1.16...v0.1.17) (2025-02-28)
+
+
+
+
+### Bug Fixes:
+
+* generate migrations to fix >= operator
+
+* Fix `money_gte` function to use the correct operator (#110)
+
 ## [v0.1.16](https://github.com/ash-project/ash_money/compare/v0.1.15...v0.1.16) (2025-02-24)
 
 
