@@ -185,14 +185,14 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       CREATE OPERATOR >= (
           leftarg = money_with_currency,
           rightarg = money_with_currency,
-          procedure = money_gt
+          procedure = money_gte
       );
 
 
       CREATE OPERATOR >= (
           leftarg = money_with_currency,
           rightarg = numeric,
-          procedure = money_gt
+          procedure = money_gte
       );
       """
     end
