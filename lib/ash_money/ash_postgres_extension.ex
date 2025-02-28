@@ -3,7 +3,13 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
     @moduledoc """
     Installs the `money_with_currency` type and operators/functions for Postgres.
     """
-    use AshPostgres.CustomExtension, name: :ash_money, latest_version: 4
+    use AshPostgres.CustomExtension, name: :ash_money, latest_version: 5
+
+    def install(4) do
+      """
+      #{Money.DDL.execute_each(fix_money_greater_than_or_equal_function())}
+      """
+    end
 
     def install(3) do
       """
@@ -50,6 +56,12 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       #{Money.DDL.execute_each(Money.DDL.define_minmax_functions())}
       #{Money.DDL.execute_each(Money.DDL.define_sum_function())}
       #{Money.DDL.execute_each(add_money_mult())}
+      """
+    end
+
+    def uninstall(5) do
+      """
+      #{Money.DDL.execute_each(unfix_money_greater_than_or_equal_function())}
       """
     end
 
@@ -193,6 +205,52 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
           leftarg = money_with_currency,
           rightarg = numeric,
           procedure = money_gte
+      );
+      """
+    end
+
+    defp fix_money_greater_than_or_equal_function do
+      """
+      DROP OPERATOR >=(money_with_currency, money_with_currency);
+
+
+      DROP OPERATOR >=(money_with_currency, numeric);
+
+
+      CREATE OPERATOR >= (
+          leftarg = money_with_currency,
+          rightarg = money_with_currency,
+          procedure = money_gte
+      );
+
+
+      CREATE OPERATOR >= (
+          leftarg = money_with_currency,
+          rightarg = numeric,
+          procedure = money_gte
+      );
+      """
+    end
+
+    defp unfix_money_greater_than_or_equal_function do
+      """
+      DROP OPERATOR >=(money_with_currency, money_with_currency);
+
+
+      DROP OPERATOR >=(money_with_currency, numeric);
+
+
+      CREATE OPERATOR >= (
+          leftarg = money_with_currency,
+          rightarg = money_with_currency,
+          procedure = money_gt
+      );
+
+
+      CREATE OPERATOR >= (
+          leftarg = money_with_currency,
+          rightarg = numeric,
+          procedure = money_gt
       );
       """
     end
@@ -510,6 +568,12 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
 
 
       DROP FUNCTION IF EXISTS money_mult(money money_with_currency, multiplicator numeric);
+
+
+      DROP FUNCTION IF EXISTS money_mult_reverse(multiplicator numeric, money money_with_currency);
+
+
+      DROP FUNCTION IF EXISTS money_mult_reverse(money money_with_currency, multiplicator numeric);
       """
     end
   end
