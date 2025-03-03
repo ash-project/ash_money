@@ -11,12 +11,21 @@ if Code.ensure_loaded?(Igniter) do
     use Igniter.Mix.Task
 
     @impl Igniter.Mix.Task
+    def info(_argv, _source) do
+      %Igniter.Mix.Task.Info{
+        schema: [
+          yes: :boolean
+        ]
+      }
+    end
+
+    @impl Igniter.Mix.Task
     def igniter(igniter, _argv) do
       repo_module_name = Igniter.Project.Module.module_name(igniter, "Repo")
 
       igniter
       |> Igniter.Project.Deps.add_dep({:ex_money_sql, "~> 1.0"})
-      |> Igniter.apply_and_fetch_dependencies()
+      |> Igniter.apply_and_fetch_dependencies(yes: igniter.args.options[:yes])
       |> Igniter.Project.Module.find_and_update_module!(repo_module_name, fn zipper ->
         case Igniter.Code.Module.move_to_use(zipper, AshPostgres.Repo) do
           # discarding since we just needed to check that `use AshPostgres.Repo` exists
