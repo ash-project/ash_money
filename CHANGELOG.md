@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.18](https://github.com/ash-project/ash_money/compare/v0.1.17...v0.1.18) (2025-03-03)
+
+
+
+
+### Bug Fixes:
+
+* don't ask for confirmation if --yes is passed to installer
+
 ## [v0.1.17](https://github.com/ash-project/ash_money/compare/v0.1.16...v0.1.17) (2025-02-28)
 
 
