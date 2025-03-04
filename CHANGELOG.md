@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.1.19](https://github.com/ash-project/ash_money/compare/v0.1.18...v0.1.19) (2025-03-04)
+
+
+
+
+### Bug Fixes:
+
+* install into all repos, and if any repo is found
+
 ## [v0.1.18](https://github.com/ash-project/ash_money/compare/v0.1.17...v0.1.18) (2025-03-03)
 
 
