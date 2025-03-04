@@ -55,14 +55,10 @@ if Code.ensure_loaded?(Igniter) do
     end
 
     defp maybe_add_to_ash_postgres(igniter) do
-      repo_module_name = Igniter.Project.Module.module_name(igniter, "Repo")
+      case Igniter.Project.Deps.get_dep(igniter, :ash_postgres) do
+        {:ok, _} ->
+          Igniter.compose_task(igniter, "ash_money.add_to_ash_postgres")
 
-      with {:ok, {igniter, _source, zipper}} <-
-             Igniter.Project.Module.find_module(igniter, repo_module_name),
-           {:ok, _zipper} <-
-             Igniter.Code.Module.move_to_module_using(zipper, AshPostgres.Repo) do
-        Igniter.compose_task(igniter, "ash_money.add_to_ash_postgres")
-      else
         _ ->
           igniter
       end

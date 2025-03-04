@@ -21,50 +21,54 @@ if Code.ensure_loaded?(Igniter) do
 
     @impl Igniter.Mix.Task
     def igniter(igniter, _argv) do
-      repo_module_name = Igniter.Project.Module.module_name(igniter, "Repo")
+      {igniter, repos} =
+        Igniter.Project.Module.find_all_matching_modules(igniter, fn _module, zipper ->
+          match?({:ok, _}, Igniter.Code.Module.move_to_use(zipper, AshPostgres.Repo))
+        end)
 
-      igniter
-      |> Igniter.Project.Deps.add_dep({:ex_money_sql, "~> 1.0"})
-      |> Igniter.apply_and_fetch_dependencies(yes: igniter.args.options[:yes])
-      |> Igniter.Project.Module.find_and_update_module!(repo_module_name, fn zipper ->
-        case Igniter.Code.Module.move_to_use(zipper, AshPostgres.Repo) do
-          # discarding since we just needed to check that `use AshPostgres.Repo` exists
-          {:ok, _zipper} ->
-            case Igniter.Code.Function.move_to_def(zipper, :installed_extensions, 0) do
-              {:ok, zipper} ->
-                case Igniter.Code.Common.move_right(zipper, &Igniter.Code.List.list?/1) do
-                  {:ok, zipper} ->
-                    case Igniter.Code.List.append_new_to_list(
-                           zipper,
-                           AshMoney.AshPostgresExtension
-                         ) do
-                      {:ok, zipper} ->
-                        {:ok, zipper}
+      Enum.reduce(repos, igniter, fn repo, igniter ->
+        igniter
+        |> Igniter.Project.Deps.add_dep({:ex_money_sql, "~> 1.0"})
+        |> Igniter.apply_and_fetch_dependencies(yes: igniter.args.options[:yes])
+        |> Igniter.Project.Module.find_and_update_module!(repo, fn zipper ->
+          case Igniter.Code.Module.move_to_use(zipper, AshPostgres.Repo) do
+            # discarding since we just needed to check that `use AshPostgres.Repo` exists
+            {:ok, _zipper} ->
+              case Igniter.Code.Function.move_to_def(zipper, :installed_extensions, 0) do
+                {:ok, zipper} ->
+                  case Igniter.Code.Common.move_right(zipper, &Igniter.Code.List.list?/1) do
+                    {:ok, zipper} ->
+                      case Igniter.Code.List.append_new_to_list(
+                             zipper,
+                             AshMoney.AshPostgresExtension
+                           ) do
+                        {:ok, zipper} ->
+                          {:ok, zipper}
 
-                      _ ->
-                        {:error,
-                         "couldn't append `AshMoney.AshPostgresExtension` to #{inspect(repo_module_name)}.installed_extensions/0"}
-                    end
+                        _ ->
+                          {:error,
+                           "couldn't append `AshMoney.AshPostgresExtension` to #{inspect(repo)}.installed_extensions/0"}
+                      end
 
-                  :error ->
-                    {:error,
-                     "#{inspect(repo_module_name)}.installed_extensions/0 doesn't return a list"}
-                end
+                    :error ->
+                      {:error, "#{inspect(repo)}.installed_extensions/0 doesn't return a list"}
+                  end
 
-              _ ->
-                Igniter.Code.Common.add_code(zipper, """
-                def installed_extensions do
-                  # Add extensions here, and the migration generator will install them.
-                  [AshMoney.AshPostgresExtension]
-                end
-                """)
-            end
+                _ ->
+                  Igniter.Code.Common.add_code(zipper, """
+                  def installed_extensions do
+                    # Add extensions here, and the migration generator will install them.
+                    [AshMoney.AshPostgresExtension]
+                  end
+                  """)
+              end
 
-          _ ->
-            {:error, "Couldn't find `use AshPostgres.Repo` in #{inspect(repo_module_name)}"}
-        end
+            _ ->
+              {:error, "Couldn't find `use AshPostgres.Repo` in #{inspect(repo)}"}
+          end
+        end)
+        |> Ash.Igniter.codegen("install_ash_money")
       end)
-      |> Ash.Igniter.codegen("install_ash_money")
     end
   end
 else
