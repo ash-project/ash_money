@@ -24,10 +24,108 @@ defmodule AshMoneyTest do
       attribute(:duration, :decimal)
 
       attribute(:amount, AshMoney.Types.Money)
+
+      attribute :amount_with_options, AshMoney.Types.Money do
+        constraints(
+          ex_money_opts: [
+            no_fraction_if_integer: true,
+            format: :short
+          ]
+        )
+
+        public?(true)
+      end
     end
   end
 
   import Ash.Expr
+
+  describe "`ex_money_opts` constraints are applied for all cast_input/2" do
+    test "with %Money{} struct" do
+      expected_output = Money.new(:USD, 0, no_fraction_if_integer: true, format: :short)
+
+      attribute = Ash.Resource.Info.attribute(ExampleResource, :amount_with_options)
+
+      {:ok, actual_output} =
+        AshMoney.Types.Money.cast_input(Money.new(:USD, 0), attribute.constraints)
+
+      assert actual_output == expected_output
+    end
+
+    test "with tuple" do
+      expected_output = Money.new(:USD, 0, no_fraction_if_integer: true, format: :short)
+
+      attribute = Ash.Resource.Info.attribute(ExampleResource, :amount_with_options)
+
+      {:ok, actual_output} =
+        AshMoney.Types.Money.cast_input({0, :USD}, attribute.constraints)
+
+      assert actual_output == expected_output
+    end
+
+    test "atom key map" do
+      expected_output = Money.new(:USD, 0, no_fraction_if_integer: true, format: :short)
+
+      attribute = Ash.Resource.Info.attribute(ExampleResource, :amount_with_options)
+
+      {:ok, actual_output} =
+        AshMoney.Types.Money.cast_input(%{amount: 0, currency: "USD"}, attribute.constraints)
+
+      assert actual_output == expected_output
+    end
+
+    test "string key map" do
+      expected_output = Money.new(:USD, 0, no_fraction_if_integer: true, format: :short)
+
+      attribute = Ash.Resource.Info.attribute(ExampleResource, :amount_with_options)
+
+      {:ok, actual_output} =
+        AshMoney.Types.Money.cast_input(
+          %{"amount" => 0, "currency" => "USD"},
+          attribute.constraints
+        )
+
+      assert actual_output == expected_output
+    end
+  end
+
+  describe "`ex_money_opts` constraints are applied for all cast_stored/2" do
+    test "with %Money{} struct" do
+      expected_output = Money.new(:USD, 0, no_fraction_if_integer: true, format: :short)
+
+      attribute = Ash.Resource.Info.attribute(ExampleResource, :amount_with_options)
+
+      {:ok, actual_output} =
+        AshMoney.Types.Money.cast_stored(Money.new(:USD, 0), attribute.constraints)
+
+      assert actual_output == expected_output
+    end
+
+    test "with tuple" do
+      expected_output = Money.new(:USD, 0, no_fraction_if_integer: true, format: :short)
+
+      attribute = Ash.Resource.Info.attribute(ExampleResource, :amount_with_options)
+
+      {:ok, actual_output} =
+        AshMoney.Types.Money.cast_stored({0, "USD"}, attribute.constraints)
+
+      assert actual_output == expected_output
+    end
+
+    test "string key map" do
+      expected_output = Money.new(:USD, 0, no_fraction_if_integer: true, format: :short)
+
+      attribute = Ash.Resource.Info.attribute(ExampleResource, :amount_with_options)
+
+      {:ok, actual_output} =
+        AshMoney.Types.Money.cast_stored(
+          %{"amount" => 0, "currency" => "USD"},
+          attribute.constraints
+        )
+
+      assert actual_output == expected_output
+    end
+  end
 
   test "type overrides correctly apply" do
     assert Ash.Expr.determine_types(
