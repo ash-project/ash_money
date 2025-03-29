@@ -257,15 +257,18 @@ defmodule AshMoney.Types.Money do
     {:ok, casted}
   end
 
-  def cast_input({amount, currency}, constraints) do
-    @composite_type.cast(
-      %{amount: amount, currency: currency},
-      List.wrap(constraints[:ex_money_opts])
-    )
+  def cast_input({currency, amount}, constraints) do
+    cast_input(%{"amount" => amount, "currency" => currency}, constraints)
   end
 
   def cast_input(value, constraints) do
-    apply(Money.Ecto.Map.Type, :cast, [value, List.wrap(constraints[:ex_money_opts])])
+    ex_money_opts = List.wrap(constraints[:ex_money_opts])
+
+    if storage_type(constraints) == :map do
+      apply(Money.Ecto.Map.Type, :cast, [value, ex_money_opts])
+    else
+      @composite_type.cast(value, ex_money_opts)
+    end
   end
 
   @impl Ash.Type
@@ -276,12 +279,14 @@ defmodule AshMoney.Types.Money do
     {:ok, casted}
   end
 
-  def cast_stored({amount, currency}, constraints) do
-    @composite_type.load({currency, amount}, nil, List.wrap(constraints[:ex_money_opts]))
+  def cast_stored({_currency, _amount} = value, constraints) do
+    ex_money_opts = List.wrap(constraints[:ex_money_opts])
+    @composite_type.load(value, nil, ex_money_opts)
   end
 
   def cast_stored(value, constraints) do
-    apply(Money.Ecto.Map.Type, :load, [value, nil, List.wrap(constraints[:ex_money_opts])])
+    ex_money_opts = List.wrap(constraints[:ex_money_opts])
+    apply(Money.Ecto.Map.Type, :load, [value, nil, ex_money_opts])
   end
 
   @impl Ash.Type

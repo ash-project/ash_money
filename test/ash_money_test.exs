@@ -58,7 +58,7 @@ defmodule AshMoneyTest do
       attribute = Ash.Resource.Info.attribute(ExampleResource, :amount_with_options)
 
       {:ok, actual_output} =
-        AshMoney.Types.Money.cast_input({0, :USD}, attribute.constraints)
+        AshMoney.Types.Money.cast_input({:USD, 0}, attribute.constraints)
 
       assert actual_output == expected_output
     end
@@ -107,7 +107,7 @@ defmodule AshMoneyTest do
       attribute = Ash.Resource.Info.attribute(ExampleResource, :amount_with_options)
 
       {:ok, actual_output} =
-        AshMoney.Types.Money.cast_stored({0, "USD"}, attribute.constraints)
+        AshMoney.Types.Money.cast_stored({"USD", 0}, attribute.constraints)
 
       assert actual_output == expected_output
     end
