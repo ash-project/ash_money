@@ -22,6 +22,11 @@ defmodule AshMoney.Types.Money do
         default: :money_with_currency,
         doc:
           "The storage type for the money value. Can be `:money_with_currency` or `:map`. There is no difference between the two unless `ex_money_sql` is installed."
+      ],
+      ex_money_opts: [
+        type: :keyword_list,
+        doc:
+          "`ex_money` Money.new/3 Options - https://hexdocs.pm/ex_money/Money.html#new/3-options"
       ]
     ]
   end
@@ -247,30 +252,36 @@ defmodule AshMoney.Types.Money do
   @impl Ash.Type
   def cast_input(nil, _constraints), do: {:ok, nil}
 
+  def cast_input(%Money{} = value, constraints) do
+    casted = Money.put_format_options(value, List.wrap(constraints[:ex_money_opts]))
+    {:ok, casted}
+  end
+
   def cast_input({amount, currency}, constraints) do
-    case Money.new(amount, currency) do
-      {:error, error} -> {:error, error}
-      money -> cast_input(money, constraints)
-    end
+    @composite_type.cast(
+      %{amount: amount, currency: currency},
+      List.wrap(constraints[:ex_money_opts])
+    )
   end
 
   def cast_input(value, constraints) do
-    if constraints[:storage_type] == :map do
-      apply(Money.Ecto.Map.Type, :cast, [value])
-    else
-      @composite_type.cast(value)
-    end
+    apply(Money.Ecto.Map.Type, :cast, [value, List.wrap(constraints[:ex_money_opts])])
   end
 
   @impl Ash.Type
   def cast_stored(nil, _), do: {:ok, nil}
-  def cast_stored(%Money{} = value, _), do: {:ok, value}
 
-  def cast_stored({_amount, _currency} = value, _constraints),
-    do: @composite_type.load(value)
+  def cast_stored(%Money{} = value, constraints) do
+    casted = Money.put_format_options(value, List.wrap(constraints[:ex_money_opts]))
+    {:ok, casted}
+  end
 
-  def cast_stored(value, _constraints) do
-    apply(Money.Ecto.Map.Type, :load, [value])
+  def cast_stored({amount, currency}, constraints) do
+    @composite_type.load({currency, amount}, nil, List.wrap(constraints[:ex_money_opts]))
+  end
+
+  def cast_stored(value, constraints) do
+    apply(Money.Ecto.Map.Type, :load, [value, nil, List.wrap(constraints[:ex_money_opts])])
   end
 
   @impl Ash.Type
