@@ -5,6 +5,19 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.2.0](https://github.com/ash-project/ash_money/compare/v0.1.19...v0.2.0) (2025-04-09)
+
+
+
+
+### Features:
+
+* add ex_money_opts contstraint to AshMoney.Types.Money (#117)
+
+### Bug Fixes:
+
+* AshMoney.Types.Money cast_input and cast_stored (#118)
+
 ## [v0.1.19](https://github.com/ash-project/ash_money/compare/v0.1.18...v0.1.19) (2025-03-04)
 
 
