@@ -1,4 +1,17 @@
 defmodule AshMoney.Types.Money do
+  @constraints [
+    storage_type: [
+      type: :atom,
+      default: :money_with_currency,
+      doc:
+        "The storage type for the money value. Can be `:money_with_currency` or `:map`. There is no difference between the two unless `ex_money_sql` is installed."
+    ],
+    ex_money_opts: [
+      type: :keyword_list,
+      doc: "`ex_money` Money.new/3 Options - https://hexdocs.pm/ex_money/Money.html#new/3-options"
+    ]
+  ]
+
   @moduledoc """
   A money type for Ash that uses the `ex_money` library.
 
@@ -9,27 +22,30 @@ defmodule AshMoney.Types.Money do
   If you've added a custom type, like `:money`:
 
   ```elixir
-  composite_type(%{currency: "USD", amount: Decimal.new("0")}}, :money)
+  composite_type(%{currency: "USD", amount: Decimal.new("0")}, :money)
   ```
-  """
-  use Ash.Type
 
-  @impl Ash.Type
-  def constraints do
-    [
-      storage_type: [
-        type: :atom,
-        default: :money_with_currency,
-        doc:
-          "The storage type for the money value. Can be `:money_with_currency` or `:map`. There is no difference between the two unless `ex_money_sql` is installed."
-      ],
+  ## Constraints Options
+
+  #{Spark.Options.docs(@constraints)}
+
+  ### Example
+  ```elixir
+  attribute :charge, :money do
+    constraints: [
       ex_money_opts: [
-        type: :keyword_list,
-        doc:
-          "`ex_money` Money.new/3 Options - https://hexdocs.pm/ex_money/Money.html#new/3-options"
+        no_fraction_if_integer: true,
+        format: :short
       ]
     ]
   end
+  ```
+  """
+
+  use Ash.Type
+
+  @impl Ash.Type
+  def constraints(), do: @constraints
 
   if Code.ensure_loaded?(Money.Ecto.Composite.Type) do
     @composite_type Money.Ecto.Composite.Type
