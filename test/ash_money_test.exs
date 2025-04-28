@@ -10,6 +10,7 @@ defmodule AshMoneyTest do
       attribute(:frozen_from, :date)
       attribute(:frozen_until, :date)
       attribute(:end_date, :date)
+      attribute(:name, :string)
 
       attribute :visit_status, :atom do
         constraints(one_of: [:scheduled])
@@ -147,6 +148,19 @@ defmodule AshMoneyTest do
              {[
                 {AshMoney.Types.Money, [storage_type: :money_with_currency]},
                 {Ash.Type.Decimal, []}
+              ], {Ash.Type.Boolean, []}}
+  end
+
+  @tag :regression
+  test "type overrides aren't too eagerly applied" do
+    {:ok, %op{left: left, right: right}} =
+      expr(string_length(name) <= 10)
+      |> Ash.Filter.hydrate_refs(%{resource: ExampleResource})
+
+    assert determine_types(op, [left, right], :boolean) ==
+             {[
+                {Ash.Type.Integer, []},
+                {Ash.Type.Integer, []}
               ], {Ash.Type.Boolean, []}}
   end
 
