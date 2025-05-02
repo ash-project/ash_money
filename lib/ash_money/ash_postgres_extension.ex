@@ -100,6 +100,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
+      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -124,6 +125,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
+      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -158,6 +160,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
+      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -182,6 +185,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
+      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -262,6 +266,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
+      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -286,6 +291,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
+      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -320,6 +326,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
+      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -344,6 +351,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
+      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -438,6 +446,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
+      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -473,6 +482,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
+      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -517,6 +527,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
+      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -534,6 +545,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
+      SET search_path = ''
       AS $$
       BEGIN
           RETURN money_mult(multiplicator, money);
