@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.2.1](https://github.com/ash-project/ash_money/compare/v0.2.0...v0.2.1) (2025-05-30)
+
+
+
+
+### Improvements:
+
+* fix igniter warnings
+
 ## [v0.2.0](https://github.com/ash-project/ash_money/compare/v0.1.19...v0.2.0) (2025-04-09)
 
 
