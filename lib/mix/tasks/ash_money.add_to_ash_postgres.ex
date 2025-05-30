@@ -20,7 +20,7 @@ if Code.ensure_loaded?(Igniter) do
     end
 
     @impl Igniter.Mix.Task
-    def igniter(igniter, _argv) do
+    def igniter(igniter) do
       {igniter, repos} =
         Igniter.Project.Module.find_all_matching_modules(igniter, fn _module, zipper ->
           match?({:ok, _}, Igniter.Code.Module.move_to_use(zipper, AshPostgres.Repo))

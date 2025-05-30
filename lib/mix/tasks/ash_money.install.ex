@@ -5,7 +5,7 @@ if Code.ensure_loaded?(Igniter) do
     require Igniter.Code.Common
     use Igniter.Mix.Task
 
-    def igniter(igniter, _argv) do
+    def igniter(igniter) do
       Igniter.compose_task(igniter, "ex_cldr.install", [], fn igniter, _argv ->
         cldr_module_name = Igniter.Project.Module.module_name(igniter, "Cldr")
 

@@ -45,7 +45,7 @@ defmodule AshMoney.Types.Money do
   use Ash.Type
 
   @impl Ash.Type
-  def constraints(), do: @constraints
+  def constraints, do: @constraints
 
   if Code.ensure_loaded?(Money.Ecto.Composite.Type) do
     @composite_type Money.Ecto.Composite.Type
