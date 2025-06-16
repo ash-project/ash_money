@@ -95,12 +95,11 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
 
     defp add_money_greater_than do
       """
-      CREATE OR REPLACE FUNCTION money_gt(money_1 money_with_currency, money_2 money_with_currency)
+      CREATE OR REPLACE FUNCTION money_gt(money_1 public.money_with_currency, money_2 public.money_with_currency)
       RETURNS BOOLEAN
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
-      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -120,12 +119,11 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       $$;
 
 
-      CREATE OR REPLACE FUNCTION money_gt(money_1 money_with_currency, amount numeric)
+      CREATE OR REPLACE FUNCTION money_gt(money_1 public.money_with_currency, amount numeric)
       RETURNS BOOLEAN
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
-      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -139,14 +137,14 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
 
 
       CREATE OPERATOR > (
-          leftarg = money_with_currency,
-          rightarg = money_with_currency,
+          leftarg = public.money_with_currency,
+          rightarg = public.money_with_currency,
           procedure = money_gt
       );
 
 
       CREATE OPERATOR > (
-          leftarg = money_with_currency,
+          leftarg = public.money_with_currency,
           rightarg = numeric,
           procedure = money_gt
       );
@@ -155,12 +153,11 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
 
     defp add_money_greater_than_or_equal do
       """
-      CREATE OR REPLACE FUNCTION money_gte(money_1 money_with_currency, money_2 money_with_currency)
+      CREATE OR REPLACE FUNCTION money_gte(money_1 public.money_with_currency, money_2 public.money_with_currency)
       RETURNS BOOLEAN
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
-      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -180,12 +177,11 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       $$;
 
 
-      CREATE OR REPLACE FUNCTION money_gte(money_1 money_with_currency, amount numeric)
+      CREATE OR REPLACE FUNCTION money_gte(money_1 public.money_with_currency, amount numeric)
       RETURNS BOOLEAN
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
-      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -199,14 +195,14 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
 
 
       CREATE OPERATOR >= (
-          leftarg = money_with_currency,
-          rightarg = money_with_currency,
+          leftarg = public.money_with_currency,
+          rightarg = public.money_with_currency,
           procedure = money_gte
       );
 
 
       CREATE OPERATOR >= (
-          leftarg = money_with_currency,
+          leftarg = public.money_with_currency,
           rightarg = numeric,
           procedure = money_gte
       );
@@ -215,21 +211,21 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
 
     defp fix_money_greater_than_or_equal_function do
       """
-      DROP OPERATOR >=(money_with_currency, money_with_currency);
+      DROP OPERATOR >=(public.money_with_currency, public.money_with_currency);
 
 
-      DROP OPERATOR >=(money_with_currency, numeric);
+      DROP OPERATOR >=(public.money_with_currency, numeric);
 
 
       CREATE OPERATOR >= (
-          leftarg = money_with_currency,
-          rightarg = money_with_currency,
+          leftarg = public.money_with_currency,
+          rightarg = public.money_with_currency,
           procedure = money_gte
       );
 
 
       CREATE OPERATOR >= (
-          leftarg = money_with_currency,
+          leftarg = public.money_with_currency,
           rightarg = numeric,
           procedure = money_gte
       );
@@ -238,15 +234,15 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
 
     defp unfix_money_greater_than_or_equal_function do
       """
-      DROP OPERATOR >=(money_with_currency, money_with_currency);
+      DROP OPERATOR >=(public.money_with_currency, public.money_with_currency);
 
 
-      DROP OPERATOR >=(money_with_currency, numeric);
+      DROP OPERATOR >=(public.money_with_currency, numeric);
 
 
       CREATE OPERATOR >= (
-          leftarg = money_with_currency,
-          rightarg = money_with_currency,
+          leftarg = public.money_with_currency,
+          rightarg = public.money_with_currency,
           procedure = money_gt
       );
 
@@ -266,7 +262,6 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
-      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -291,7 +286,6 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
-      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -326,7 +320,6 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
-      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -351,7 +344,6 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
-      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -446,7 +438,6 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
-      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -482,7 +473,6 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
-      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -527,7 +517,6 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
-      SET search_path = ''
       AS $$
         DECLARE
           currency varchar;
@@ -545,7 +534,6 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       IMMUTABLE
       STRICT
       LANGUAGE plpgsql
-      SET search_path = ''
       AS $$
       BEGIN
           RETURN money_mult(multiplicator, money);
