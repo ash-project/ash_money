@@ -9,8 +9,14 @@ if Code.ensure_loaded?(Igniter) do
       Igniter.compose_task(igniter, "ex_cldr.install", [], fn igniter, _argv ->
         cldr_module_name = Igniter.Project.Module.module_name(igniter, "Cldr")
 
+        igniter =
+          if Igniter.Project.Deps.has_dep?(igniter, :ex_cldr) do
+            igniter
+          else
+            Igniter.Project.Deps.add_dep(igniter, {:ex_cldr, "~> 2.0"})
+          end
+
         igniter
-        |> Igniter.Project.Deps.add_dep("ex_cldr", "~> 2.0")
         |> Igniter.Project.Module.find_and_update_or_create_module(
           cldr_module_name,
           """
