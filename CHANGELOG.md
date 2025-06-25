@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.2.3](https://github.com/ash-project/ash_money/compare/v0.2.2...v0.2.3) (2025-06-25)
+
+
+
+
+### Bug Fixes:
+
+* add ex_cldr dependency by Zach Daniel
+
 ## [v0.2.2](https://github.com/ash-project/ash_money/compare/v0.2.1...v0.2.2) (2025-06-16)
 
 
