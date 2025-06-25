@@ -10,6 +10,7 @@ if Code.ensure_loaded?(Igniter) do
         cldr_module_name = Igniter.Project.Module.module_name(igniter, "Cldr")
 
         igniter
+        |> Igniter.Project.Deps.add_dep("ex_cldr", "~> 2.0")
         |> Igniter.Project.Module.find_and_update_or_create_module(
           cldr_module_name,
           """
