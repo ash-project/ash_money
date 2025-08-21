@@ -252,6 +252,9 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
           rightarg = numeric,
           procedure = money_gt
       );
+
+
+      DROP TYPE IF EXISTS public.money_with_currency CASCADE;
       """
     end
 
