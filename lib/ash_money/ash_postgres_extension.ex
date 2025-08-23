@@ -62,6 +62,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
     def uninstall(5) do
       """
       #{Money.DDL.execute_each(unfix_money_greater_than_or_equal_function())}
+      #{Money.DDL.execute_each(drop_money_with_currency())}
       """
     end
 
@@ -252,6 +253,12 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
           rightarg = numeric,
           procedure = money_gt
       );
+      """
+    end
+
+    defp drop_money_with_currency do
+      """
+      DROP TYPE IF EXISTS public.money_with_currency CASCADE;
       """
     end
 
