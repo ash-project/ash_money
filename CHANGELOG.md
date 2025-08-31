@@ -5,6 +5,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.2.4](https://github.com/ash-project/ash_money/compare/v0.2.3...v0.2.4) (2025-08-31)
+
+
+
+
+### Bug Fixes:
+
+* Cascade drop money with currency on extenstion uninstall (rollback) (#144) by Kenneth Kostrešević
+
 ## [v0.2.3](https://github.com/ash-project/ash_money/compare/v0.2.2...v0.2.3) (2025-06-25)
 
 
