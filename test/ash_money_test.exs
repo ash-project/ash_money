@@ -1,5 +1,6 @@
 defmodule AshMoneyTest do
   use ExUnit.Case
+  use ExUnitProperties
   doctest AshMoney
 
   defmodule ExampleResource do
@@ -182,5 +183,89 @@ defmodule AshMoneyTest do
              |> Ash.Filter.hydrate_refs(%{resource: ExampleResource})
 
     assert {:ok, :USD} = eval(expr, record: %ExampleResource{amount: Money.new(0, :USD)})
+  end
+
+  describe "generator/1" do
+    test "generates valid Money structs" do
+      check all(
+              money <- AshMoney.Types.Money.generator([]),
+              max_runs: 50
+            ) do
+        assert %Money{} = money
+        assert is_atom(money.currency)
+        assert %Decimal{} = money.amount
+      end
+    end
+
+    test "generator works with Ash.Seed" do
+      # Verify that generated money values can be cast
+      check all(
+              money <- AshMoney.Types.Money.generator([]),
+              max_runs: 20
+            ) do
+        {:ok, casted} = AshMoney.Types.Money.cast_input(money, [])
+        assert %Money{} = casted
+      end
+    end
+
+    test "generator respects currencies constraint" do
+      check all(
+              money <- AshMoney.Types.Money.generator(currencies: [:USD, :EUR, :GBP]),
+              max_runs: 30
+            ) do
+        assert money.currency in [:USD, :EUR, :GBP]
+      end
+    end
+
+    test "generator respects min constraint" do
+      min = Decimal.new("10")
+
+      check all(
+              money <- AshMoney.Types.Money.generator(min: min),
+              max_runs: 30
+            ) do
+        assert Decimal.compare(money.amount, min) != :lt
+      end
+    end
+
+    test "generator respects max constraint" do
+      max = Decimal.new("100")
+
+      check all(
+              money <- AshMoney.Types.Money.generator(max: max),
+              max_runs: 30
+            ) do
+        assert Decimal.compare(money.amount, max) != :gt
+      end
+    end
+
+    test "generator respects min and max constraints together" do
+      min = Decimal.new("50")
+      max = Decimal.new("200")
+
+      check all(
+              money <- AshMoney.Types.Money.generator(min: min, max: max),
+              max_runs: 30
+            ) do
+        assert Decimal.compare(money.amount, min) != :lt
+        assert Decimal.compare(money.amount, max) != :gt
+      end
+    end
+
+    test "generator respects all constraints together" do
+      check all(
+              money <-
+                AshMoney.Types.Money.generator(
+                  currencies: [:JPY, :USD],
+                  min: 1000,
+                  max: 5000
+                ),
+              max_runs: 30
+            ) do
+        assert money.currency in [:JPY, :USD]
+        assert Decimal.compare(money.amount, Decimal.new("1000")) != :lt
+        assert Decimal.compare(money.amount, Decimal.new("5000")) != :gt
+      end
+    end
   end
 end

@@ -47,6 +47,53 @@ defmodule AshMoney.Types.Money do
   @impl Ash.Type
   def constraints, do: @constraints
 
+  @impl Ash.Type
+  def generator(constraints) do
+    # Get currency list from constraints or use all known currencies
+    currencies =
+      case Keyword.get(constraints, :currencies, []) do
+        [] -> Money.known_current_currencies()
+        list when is_list(list) -> list
+      end
+
+    # Generate a random currency code
+    currency_generator = StreamData.member_of(currencies)
+
+    # Determine min/max for amount generation and normalize to Decimal for comparison
+    {min_amount, min_decimal} =
+      case Keyword.get(constraints, :min) do
+        nil -> {-999_999_999.99, nil}
+        %Decimal{} = d -> {Decimal.to_float(d), d}
+        other when is_number(other) -> {other * 1.0, Decimal.from_float(other * 1.0)}
+      end
+
+    {max_amount, max_decimal} =
+      case Keyword.get(constraints, :max) do
+        nil -> {999_999_999.99, nil}
+        %Decimal{} = d -> {Decimal.to_float(d), d}
+        other when is_number(other) -> {other * 1.0, Decimal.from_float(other * 1.0)}
+      end
+
+    # Generate a random decimal amount
+    # Using floats and converting to avoid decimal generation complexity
+    amount_generator =
+      StreamData.float(min: min_amount, max: max_amount)
+      |> StreamData.map(&Decimal.from_float/1)
+      # Second pass filter to account for floating point inaccuracies
+      |> StreamData.filter(fn value ->
+        (is_nil(min_decimal) || Decimal.compare(value, min_decimal) != :lt) &&
+          (is_nil(max_decimal) || Decimal.compare(value, max_decimal) != :gt)
+      end)
+
+    # Combine currency and amount to create Money structs
+    StreamData.bind(currency_generator, fn currency ->
+      StreamData.bind(amount_generator, fn amount ->
+        ex_money_opts = Keyword.get(constraints, :ex_money_opts, [])
+        StreamData.constant(Money.new!(currency, amount, ex_money_opts))
+      end)
+    end)
+  end
+
   if Code.ensure_loaded?(Money.Ecto.Composite.Type) do
     @composite_type Money.Ecto.Composite.Type
   else
