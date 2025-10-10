@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2020 Zach Daniel
+#
+# SPDX-License-Identifier: MIT
+
 import Ash.Type.Comparable
 
 defcomparable left :: Money, right :: Integer do

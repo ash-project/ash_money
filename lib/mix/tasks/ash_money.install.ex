@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2020 Zach Daniel
+#
+# SPDX-License-Identifier: MIT
+
 if Code.ensure_loaded?(Igniter) do
   defmodule Mix.Tasks.AshMoney.Install do
     @moduledoc "Installs AshMoney. Should be run with `mix igniter.install ash_money`"
