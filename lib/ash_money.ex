@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2020 Zach Daniel
+#
+# SPDX-License-Identifier: MIT
+
 defmodule AshMoney do
   @moduledoc """
   `AshMoney` provides a type for working with money in your Ash resources.
