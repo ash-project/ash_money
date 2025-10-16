@@ -9,6 +9,14 @@ defmodule AshMoney.Types.Money do
     ex_money_opts: [
       type: :keyword_list,
       doc: "`ex_money` Money.new/3 Options - https://hexdocs.pm/ex_money/Money.html#new/3-options"
+    ],
+    min: [
+      type: {:custom, __MODULE__, :decimal, []},
+      doc: "Enforces a minimum on the amount"
+    ],
+    max: [
+      type: {:custom, __MODULE__, :decimal, []},
+      doc: "Enforces a maximum on the amount"
     ]
   ]
 
@@ -33,6 +41,8 @@ defmodule AshMoney.Types.Money do
   ```elixir
   attribute :charge, :money do
     constraints: [
+      min: Decimal.new("0"),
+      max: Decimal.new("1000"),
       ex_money_opts: [
         no_fraction_if_integer: true,
         format: :short
@@ -44,54 +54,87 @@ defmodule AshMoney.Types.Money do
 
   use Ash.Type
 
+  require Decimal
+
   @impl Ash.Type
   def constraints, do: @constraints
 
+  def decimal(value) do
+    case Ecto.Type.cast(:decimal, value) do
+      {:ok, decimal} ->
+        {:ok, decimal}
+
+      :error ->
+        {:error, "cannot be casted to decimal"}
+    end
+  end
+
   @impl Ash.Type
   def generator(constraints) do
-    # Get currency list from constraints or use all known currencies
+    ex_money_opts = Keyword.get(constraints, :ex_money_opts, [])
+
     currencies =
       case Keyword.get(constraints, :currencies, []) do
         [] -> Money.known_current_currencies()
         list when is_list(list) -> list
       end
 
-    # Generate a random currency code
     currency_generator = StreamData.member_of(currencies)
 
-    # Determine min/max for amount generation and normalize to Decimal for comparison
-    {min_amount, min_decimal} =
-      case Keyword.get(constraints, :min) do
-        nil -> {-999_999_999.99, nil}
-        %Decimal{} = d -> {Decimal.to_float(d), d}
-        other when is_number(other) -> {other * 1.0, Decimal.from_float(other * 1.0)}
-      end
-
-    {max_amount, max_decimal} =
-      case Keyword.get(constraints, :max) do
-        nil -> {999_999_999.99, nil}
-        %Decimal{} = d -> {Decimal.to_float(d), d}
-        other when is_number(other) -> {other * 1.0, Decimal.from_float(other * 1.0)}
-      end
-
-    # Generate a random decimal amount
-    # Using floats and converting to avoid decimal generation complexity
-    amount_generator =
-      StreamData.float(min: min_amount, max: max_amount)
-      |> StreamData.map(&Decimal.from_float/1)
-      # Second pass filter to account for floating point inaccuracies
-      |> StreamData.filter(fn value ->
-        (is_nil(min_decimal) || Decimal.compare(value, min_decimal) != :lt) &&
-          (is_nil(max_decimal) || Decimal.compare(value, max_decimal) != :gt)
+    params =
+      constraints
+      |> Keyword.take([:min, :max])
+      |> Enum.map(fn {key, value} ->
+        if Decimal.is_decimal(value) do
+          {key, Decimal.to_float(value)}
+        else
+          {key, value}
+        end
       end)
 
-    # Combine currency and amount to create Money structs
+    amount_generator =
+      params
+      |> StreamData.float()
+      |> StreamData.map(&Decimal.from_float/1)
+      |> StreamData.filter(fn value ->
+        !(constraints[:min] && Decimal.lt?(value, constraints[:min])) &&
+          !(constraints[:max] && Decimal.gt?(value, constraints[:max]))
+      end)
+
     StreamData.bind(currency_generator, fn currency ->
       StreamData.bind(amount_generator, fn amount ->
-        ex_money_opts = Keyword.get(constraints, :ex_money_opts, [])
         StreamData.constant(Money.new!(currency, amount, ex_money_opts))
       end)
     end)
+  end
+
+  def apply_constraints(nil, _), do: {:ok, nil}
+
+  def apply_constraints(%Money{amount: amount} = value, constraints) do
+    errors =
+      Enum.reduce(constraints, [], fn
+        {:min, min}, errors ->
+          if Decimal.compare(amount, min) == :lt do
+            [[message: "must be more than or equal to %{min}", min: min] | errors]
+          else
+            errors
+          end
+
+        {:max, max}, errors ->
+          if Decimal.compare(amount, max) == :gt do
+            [[message: "must be less than or equal to %{max}", max: max] | errors]
+          else
+            errors
+          end
+
+        _, errors ->
+          errors
+      end)
+
+    case errors do
+      [] -> {:ok, value}
+      errors -> {:error, errors}
+    end
   end
 
   if Code.ensure_loaded?(Money.Ecto.Composite.Type) do
@@ -317,7 +360,7 @@ defmodule AshMoney.Types.Money do
 
   def cast_input(%Money{} = value, constraints) do
     casted = Money.put_format_options(value, List.wrap(constraints[:ex_money_opts]))
-    {:ok, casted}
+    apply_constraints(casted, constraints)
   end
 
   def cast_input({currency, amount}, constraints) do
@@ -327,10 +370,16 @@ defmodule AshMoney.Types.Money do
   def cast_input(value, constraints) do
     ex_money_opts = List.wrap(constraints[:ex_money_opts])
 
-    if storage_type(constraints) == :map do
-      apply(Money.Ecto.Map.Type, :cast, [value, ex_money_opts])
-    else
-      @composite_type.cast(value, ex_money_opts)
+    result =
+      if storage_type(constraints) == :map do
+        apply(Money.Ecto.Map.Type, :cast, [value, ex_money_opts])
+      else
+        @composite_type.cast(value, ex_money_opts)
+      end
+
+    case result do
+      {:ok, money} -> apply_constraints(money, constraints)
+      error -> error
     end
   end
 
