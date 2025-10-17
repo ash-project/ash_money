@@ -134,35 +134,28 @@ defmodule AshMoneyTest do
       constraints = [min: Decimal.new("10"), max: Decimal.new("100")]
       money = Money.new(:USD, 50)
 
-      {:ok, casted} = AshMoney.Types.Money.cast_input(money, constraints)
-      assert {:ok, ^money} = AshMoney.Types.Money.apply_constraints(casted, constraints)
+      assert {:ok, ^money} = cast_input(money, constraints)
     end
 
     test "accepts value equal to min" do
       constraints = [min: Decimal.new("10")]
       money = Money.new(:USD, 10)
 
-      {:ok, casted} = AshMoney.Types.Money.cast_input(money, constraints)
-      assert {:ok, ^money} = AshMoney.Types.Money.apply_constraints(casted, constraints)
+      assert {:ok, ^money} = cast_input(money, constraints)
     end
 
     test "accepts value equal to max" do
       constraints = [max: Decimal.new("100")]
       money = Money.new(:USD, 100)
 
-      {:ok, casted} = AshMoney.Types.Money.cast_input(money, constraints)
-      assert {:ok, ^money} = AshMoney.Types.Money.apply_constraints(casted, constraints)
+      assert {:ok, ^money} = cast_input(money, constraints)
     end
 
     test "rejects value below min" do
       constraints = [min: Decimal.new("10")]
       money = Money.new(:USD, 5)
 
-      {:ok, casted} = AshMoney.Types.Money.cast_input(money, constraints)
-
-      assert {:error, [[message: message, min: min]]} =
-               AshMoney.Types.Money.apply_constraints(casted, constraints)
-
+      assert {:error, [[message: message, min: min]]} = cast_input(money, constraints)
       assert message == "must be more than or equal to %{min}"
       assert min == Decimal.new("10")
     end
@@ -171,11 +164,7 @@ defmodule AshMoneyTest do
       constraints = [max: Decimal.new("100")]
       money = Money.new(:USD, 150)
 
-      {:ok, casted} = AshMoney.Types.Money.cast_input(money, constraints)
-
-      assert {:error, [[message: message, max: max]]} =
-               AshMoney.Types.Money.apply_constraints(casted, constraints)
-
+      assert {:error, [[message: message, max: max]]} = cast_input(money, constraints)
       assert message == "must be less than or equal to %{max}"
       assert max == Decimal.new("100")
     end
@@ -185,36 +174,20 @@ defmodule AshMoneyTest do
       money_too_low = Money.new(:USD, 5)
       money_too_high = Money.new(:USD, 150)
 
-      {:ok, casted_low} = AshMoney.Types.Money.cast_input(money_too_low, constraints)
-      {:ok, casted_high} = AshMoney.Types.Money.cast_input(money_too_high, constraints)
-
-      assert {:error, [[message: _, min: _]]} =
-               AshMoney.Types.Money.apply_constraints(casted_low, constraints)
-
-      assert {:error, [[message: _, max: _]]} =
-               AshMoney.Types.Money.apply_constraints(casted_high, constraints)
+      assert {:error, [[message: _, min: _]]} = cast_input(money_too_low, constraints)
+      assert {:error, [[message: _, max: _]]} = cast_input(money_too_high, constraints)
     end
 
     test "works with different input formats" do
       constraints = [min: Decimal.new("10"), max: Decimal.new("100")]
 
       # Test with tuple
-      {:ok, casted_tuple_valid} = AshMoney.Types.Money.cast_input({:USD, 50}, constraints)
-      assert {:ok, _} = AshMoney.Types.Money.apply_constraints(casted_tuple_valid, constraints)
-
-      {:ok, casted_tuple_invalid} = AshMoney.Types.Money.cast_input({:USD, 5}, constraints)
-      assert {:error, _} = AshMoney.Types.Money.apply_constraints(casted_tuple_invalid, constraints)
+      assert {:ok, _} = cast_input({:USD, 50}, constraints)
+      assert {:error, _} = cast_input({:USD, 5}, constraints)
 
       # Test with map
-      {:ok, casted_map_valid} =
-        AshMoney.Types.Money.cast_input(%{"amount" => 50, "currency" => "USD"}, constraints)
-
-      assert {:ok, _} = AshMoney.Types.Money.apply_constraints(casted_map_valid, constraints)
-
-      {:ok, casted_map_invalid} =
-        AshMoney.Types.Money.cast_input(%{"amount" => 5, "currency" => "USD"}, constraints)
-
-      assert {:error, _} = AshMoney.Types.Money.apply_constraints(casted_map_invalid, constraints)
+      assert {:ok, _} = cast_input(%{"amount" => 50, "currency" => "USD"}, constraints)
+      assert {:error, _} = cast_input(%{"amount" => 5, "currency" => "USD"}, constraints)
     end
 
     test "nil values bypass constraints" do
@@ -228,11 +201,8 @@ defmodule AshMoneyTest do
       money_valid = Money.new(:USD, -50)
       money_invalid = Money.new(:USD, -150)
 
-      {:ok, casted_valid} = AshMoney.Types.Money.cast_input(money_valid, constraints)
-      assert {:ok, ^money_valid} = AshMoney.Types.Money.apply_constraints(casted_valid, constraints)
-
-      {:ok, casted_invalid} = AshMoney.Types.Money.cast_input(money_invalid, constraints)
-      assert {:error, _} = AshMoney.Types.Money.apply_constraints(casted_invalid, constraints)
+      assert {:ok, ^money_valid} = cast_input(money_valid, constraints)
+      assert {:error, _} = cast_input(money_invalid, constraints)
     end
 
     test "works with negative min and max values" do
@@ -241,16 +211,9 @@ defmodule AshMoneyTest do
       money_too_low = Money.new(:USD, -150)
       money_too_high = Money.new(:USD, 0)
 
-      {:ok, casted_valid} = AshMoney.Types.Money.cast_input(money_valid, constraints)
-      assert {:ok, ^money_valid} = AshMoney.Types.Money.apply_constraints(casted_valid, constraints)
-
-      {:ok, casted_too_low} = AshMoney.Types.Money.cast_input(money_too_low, constraints)
-      assert {:error, [[message: _, min: _]]} =
-               AshMoney.Types.Money.apply_constraints(casted_too_low, constraints)
-
-      {:ok, casted_too_high} = AshMoney.Types.Money.cast_input(money_too_high, constraints)
-      assert {:error, [[message: _, max: _]]} =
-               AshMoney.Types.Money.apply_constraints(casted_too_high, constraints)
+      assert {:ok, ^money_valid} = cast_input(money_valid, constraints)
+      assert {:error, [[message: _, min: _]]} = cast_input(money_too_low, constraints)
+      assert {:error, [[message: _, max: _]]} = cast_input(money_too_high, constraints)
     end
   end
 
@@ -415,6 +378,12 @@ defmodule AshMoneyTest do
         assert Decimal.compare(money.amount, min) != :lt
         assert Decimal.compare(money.amount, max) != :gt
       end
+    end
+  end
+
+  defp cast_input(value, constraints) do
+    with {:ok, value} <- AshMoney.Types.Money.cast_input(value, constraints) do
+      AshMoney.Types.Money.apply_constraints(value, constraints)
     end
   end
 end
