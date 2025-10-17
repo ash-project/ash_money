@@ -59,6 +59,7 @@ defmodule AshMoney.Types.Money do
   @impl Ash.Type
   def constraints, do: @constraints
 
+  @doc false
   def decimal(value) do
     case Ecto.Type.cast(:decimal, value) do
       {:ok, decimal} ->
@@ -360,7 +361,7 @@ defmodule AshMoney.Types.Money do
 
   def cast_input(%Money{} = value, constraints) do
     casted = Money.put_format_options(value, List.wrap(constraints[:ex_money_opts]))
-    apply_constraints(casted, constraints)
+    {:ok, casted}
   end
 
   def cast_input({currency, amount}, constraints) do
@@ -370,16 +371,10 @@ defmodule AshMoney.Types.Money do
   def cast_input(value, constraints) do
     ex_money_opts = List.wrap(constraints[:ex_money_opts])
 
-    result =
-      if storage_type(constraints) == :map do
-        apply(Money.Ecto.Map.Type, :cast, [value, ex_money_opts])
-      else
-        @composite_type.cast(value, ex_money_opts)
-      end
-
-    case result do
-      {:ok, money} -> apply_constraints(money, constraints)
-      error -> error
+    if storage_type(constraints) == :map do
+      apply(Money.Ecto.Map.Type, :cast, [value, ex_money_opts])
+    else
+      @composite_type.cast(value, ex_money_opts)
     end
   end
 
