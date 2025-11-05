@@ -5,7 +5,7 @@
 defmodule AshMoney.MixProject do
   use Mix.Project
 
-  @version "0.2.4"
+  @version "0.2.5"
 
   @description """
   The extension for working with money types in Ash.

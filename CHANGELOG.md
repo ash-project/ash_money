@@ -11,6 +11,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.2.5](https://github.com/ash-project/ash_money/compare/v0.2.4...v0.2.5) (2025-11-05)
+
+
+
+
+### Improvements:
+
+* implement generator for Money type (#156) by Scott Bennett
+
 ## [v0.2.4](https://github.com/ash-project/ash_money/compare/v0.2.3...v0.2.4) (2025-08-31)
 
 
