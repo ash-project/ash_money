@@ -44,7 +44,7 @@ defmodule AshMoney.MixProject do
       ],
       licenses: ["MIT"],
       files: ~w(lib .formatter.exs mix.exs README* LICENSE*
-      CHANGELOG* documentation),
+      CHANGELOG* documentation usage-rules.md),
       links: %{
         "GitHub" => "https://github.com/ash-project/ash_money",
         "Changelog" => "https://github.com/ash-project/ash_money/blob/main/CHANGELOG.md",
