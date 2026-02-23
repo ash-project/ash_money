@@ -575,16 +575,10 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       DROP OPERATOR * (numeric, money_with_currency);
 
 
-      DROP FUNCTION IF EXISTS money_mult(multiplicator numeric, money money_with_currency);
-
-
-      DROP FUNCTION IF EXISTS money_mult(money money_with_currency, multiplicator numeric);
-
-
-      DROP FUNCTION IF EXISTS money_mult_reverse(multiplicator numeric, money money_with_currency);
-
-
       DROP FUNCTION IF EXISTS money_mult_reverse(money money_with_currency, multiplicator numeric);
+
+
+      DROP FUNCTION IF EXISTS money_mult(multiplicator numeric, money money_with_currency);
       """
     end
   end
