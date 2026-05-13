@@ -21,6 +21,4 @@ if Mix.env() == :dev do
     version_tag_prefix: "v"
 end
 
-config :ex_money, default_cldr_backend: AshMoney.Cldr
-
 config :ash, :known_types, [AshMoney.Types.Money]

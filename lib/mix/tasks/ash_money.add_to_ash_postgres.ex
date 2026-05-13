@@ -32,7 +32,7 @@ if Code.ensure_loaded?(Igniter) do
 
       Enum.reduce(repos, igniter, fn repo, igniter ->
         igniter
-        |> Igniter.Project.Deps.add_dep({:ex_money_sql, "~> 1.0"})
+        |> Igniter.Project.Deps.add_dep({:ex_money_sql, "~> 2.0"})
         |> Igniter.apply_and_fetch_dependencies(yes: igniter.args.options[:yes])
         |> Igniter.Project.Module.find_and_update_module!(repo, fn zipper ->
           case Igniter.Code.Module.move_to_use(zipper, AshPostgres.Repo) do

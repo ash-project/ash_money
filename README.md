@@ -21,6 +21,10 @@ Welcome! This is the extension for working with money types in [Ash](https://hex
 - An `AshPostgres.Extension` for supporting common money operations directly in the database
 - An implementation of `Comp` for `%Money{}`, allowing Ash to compare them.
 
+#### ex_money 6.0 and Localize {: .info}
+
+From this version, `ash_money` requires `ex_money ~> 6.0`. `ex_money 6.0` replaces the `ex_cldr` family of dependencies with the unified [localize](https://hex.pm/packages/localize) package and removes the compile-time CLDR backend system. Any `MyApp.Cldr` backend module, or configuration using `:default_cldr_backend`, should be removed. Locales are now configured through `config :localize` and accessed through the `Localize` module (for example `Localize.put_locale/1`). See the [ex_money 6.0 migration guide](https://hexdocs.pm/ex_money/readme.html#migration-from-5-x-to-6-0) for full details.
+
 ## Tutorials
 
 - [Getting Started with AshMoney](documentation/tutorials/getting-started-with-ash-money.md)
