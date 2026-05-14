@@ -116,9 +116,9 @@ defmodule AshMoney.MixProject do
   defp deps do
     [
       {:ash, ash_version("~> 3.0 and >= 3.0.15")},
-      {:ex_money, "~> 5.15"},
+      {:ex_money, "~> 6.0"},
       {:igniter, "~> 0.5 and >= 0.5.30", optional: true},
-      {:ex_money_sql, "~> 1.0", optional: true},
+      {:ex_money_sql, "~> 2.0", optional: true},
       {:ash_postgres, "~> 2.0", optional: true},
       {:ash_graphql, "~> 1.0", optional: true},
       {:ash_json_api, "~> 1.4 and >= 1.4.3", optional: true},
