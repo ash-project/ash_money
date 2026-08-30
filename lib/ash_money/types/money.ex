@@ -222,7 +222,13 @@ defmodule AshMoney.Types.Money do
              Ash.Query.Operator.LessThanOrEqual,
              Ash.Query.Operator.GreaterThanOrEqual
            ] do
-    evaluate_operator(%{operator | left: left, right: Money.new(left.currency, right)})
+    case Money.new(left.currency, right) do
+      %Money{} = right ->
+        evaluate_operator(%{operator | left: left, right: right})
+
+      _ ->
+        :unknown
+    end
   end
 
   def evaluate_operator(
@@ -237,7 +243,13 @@ defmodule AshMoney.Types.Money do
              Ash.Query.Operator.LessThanOrEqual,
              Ash.Query.Operator.GreaterThanOrEqual
            ] do
-    evaluate_operator(%{operator | left: Money.new(right.currency, left), right: right})
+    case Money.new(right.currency, left) do
+      %Money{} = left ->
+        evaluate_operator(%{operator | left: left, right: right})
+
+      _ ->
+        :unknown
+    end
   end
 
   def evaluate_operator(%Ash.Query.Operator.Basic.Plus{
