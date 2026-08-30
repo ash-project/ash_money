@@ -385,6 +385,27 @@ defmodule AshMoneyTest do
     end
   end
 
+  describe "evaluate_operator/1 comparison coercion" do
+    test "returns :unknown when the other operand cannot be coerced to Money" do
+      op = %Ash.Query.Operator.GreaterThan{
+        left: Money.new!(:USD, "10.00"),
+        right: "not a number"
+      }
+
+      task = Task.async(fn -> AshMoney.Types.Money.evaluate_operator(op) end)
+      assert :unknown = Task.await(task, 2000)
+    end
+
+    test "still evaluates a valid comparison" do
+      op = %Ash.Query.Operator.LessThan{
+        left: Money.new!(:USD, "5.00"),
+        right: Money.new!(:USD, "10.00")
+      }
+
+      assert {:known, true} = AshMoney.Types.Money.evaluate_operator(op)
+    end
+  end
+
   defp cast_input(value, constraints) do
     with {:ok, value} <- AshMoney.Types.Money.cast_input(value, constraints) do
       AshMoney.Types.Money.apply_constraints(value, constraints)
