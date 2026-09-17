@@ -22,3 +22,5 @@ if Mix.env() == :dev do
 end
 
 config :ash, :known_types, [AshMoney.Types.Money]
+
+config :ash, default_string_length_count: :codepoints
