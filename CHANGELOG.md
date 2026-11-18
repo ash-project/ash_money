@@ -11,6 +11,15 @@ See [Conventional Commits](Https://conventionalcommits.org) for commit guideline
 
 <!-- changelog -->
 
+## [v0.2.8](https://github.com/ash-project/ash_money/compare/v0.2.7...v0.2.8) (2026-11-18)
+
+
+
+
+### Bug Fixes:
+
+* don't declare money_with_currency subtraction as its own commutator by Stefan Luptak
+
 ## [v0.2.7](https://github.com/ash-project/ash_money/compare/v0.2.6...v0.2.7) (2026-10-25)
 
 

@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
 def deps()
   [
     ...
-    {:ash_money, "~> 0.2.7"}
+    {:ash_money, "~> 0.2.8"}
   ]
 end
 ```
