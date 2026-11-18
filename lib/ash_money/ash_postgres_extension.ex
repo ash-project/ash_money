@@ -7,11 +7,18 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
     @moduledoc """
     Installs the `money_with_currency` type and operators/functions for Postgres.
     """
-    use AshPostgres.CustomExtension, name: :ash_money, latest_version: 5
+    use AshPostgres.CustomExtension, name: :ash_money, latest_version: 6
+
+    def install(5) do
+      """
+      #{Money.DDL.execute_each(fix_money_sub_commutator())}
+      """
+    end
 
     def install(4) do
       """
       #{Money.DDL.execute_each(fix_money_greater_than_or_equal_function())}
+      #{install(5)}
       """
     end
 
@@ -21,6 +28,7 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       #{Money.DDL.execute_each(add_money_greater_than_or_equal())}
       #{Money.DDL.execute_each(add_money_less_than())}
       #{Money.DDL.execute_each(add_money_less_than_or_equal())}
+      #{install(5)}
       """
     end
 
@@ -62,6 +70,8 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       #{Money.DDL.execute_each(add_money_mult())}
       """
     end
+
+    def uninstall(6), do: uninstall(5)
 
     def uninstall(5) do
       """
@@ -506,8 +516,22 @@ if Code.ensure_loaded?(AshPostgres.CustomExtension) do
       CREATE OPERATOR - (
           leftarg = money_with_currency,
           rightarg = money_with_currency,
-          procedure = money_sub,
-          commutator = -
+          procedure = money_sub
+      );
+      """
+    end
+
+    # Versions before 6 declared `commutator = -`, which tells the planner that
+    # `a - b = b - a`. A commutator cannot be removed with ALTER OPERATOR.
+    defp fix_money_sub_commutator do
+      """
+      DROP OPERATOR -(money_with_currency, money_with_currency);
+
+
+      CREATE OPERATOR - (
+          leftarg = money_with_currency,
+          rightarg = money_with_currency,
+          procedure = money_sub
       );
       """
     end
